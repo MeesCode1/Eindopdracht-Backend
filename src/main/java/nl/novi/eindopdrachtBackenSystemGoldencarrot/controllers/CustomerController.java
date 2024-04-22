@@ -19,24 +19,24 @@ public class CustomerController {
 
     private final CustomerService service;
 
-    public CustomerController(CustomerService service){
-     this.service = service;
+    public CustomerController(CustomerService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public List<CustomerDto> showCustomers(){
+    public List<CustomerDto> showCustomers() {
         return service.getAllCustomers();
     }
 
     @GetMapping("/{company}")
-    public ResponseEntity<CustomerDto> getCustomerByCompany(@PathVariable String company){
+    public ResponseEntity<CustomerDto> getCustomerByCompany(@PathVariable String company) {
         CustomerDto cdto = service.getCustomerByCompany(company);
         return ResponseEntity.ok(cdto);
     }
 
     @PostMapping
     public ResponseEntity<Object> createCustomer(@Valid @RequestBody CustomerDto cdto,
-                                                 BindingResult br){
+                                                 BindingResult br) {
 
         String fieldErrors = BindingValidator.validateInput(br);
         if (fieldErrors != null) {
@@ -52,14 +52,14 @@ public class CustomerController {
 
     @PutMapping("/{company}")
     public ResponseEntity<CustomerDto> updateCustomer(@PathVariable String company,
-                                                      @RequestBody CustomerDto cdto){
+                                                      @RequestBody CustomerDto cdto) {
 
         cdto = service.updateCustomer(company, cdto);
         return ResponseEntity.ok(cdto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCustomer(@PathVariable Long id){
+    public ResponseEntity<String> deleteCustomer(@PathVariable Long id) {
         String deletedCustomer = service.deleteCustomer(id);
         return ResponseEntity.ok("Customer: \"" + deletedCustomer + "\" deleted from database");
     }

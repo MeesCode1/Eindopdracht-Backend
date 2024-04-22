@@ -18,12 +18,12 @@ import java.util.List;
 public class ProductController {
     private final ProductService service;
 
-    public ProductController(ProductService service){
+    public ProductController(ProductService service) {
         this.service = service;
     }
 
     @GetMapping
-    public List<ProductDto> showProducts(){
+    public List<ProductDto> showProducts() {
         return service.getAllProducts();
     }
 
@@ -42,7 +42,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Object> createProduct(@Valid @RequestBody ProductDto pdto,
-                                                BindingResult br){
+                                                BindingResult br) {
 
         String fieldErrors = BindingValidator.validateInput(br);
         if (fieldErrors != null) {
@@ -58,14 +58,14 @@ public class ProductController {
 
     @PutMapping("/{productname}")
     public ResponseEntity<ProductDto> updateProduct(@PathVariable String productname,
-                                                    @RequestBody ProductDto pdto){
+                                                    @RequestBody ProductDto pdto) {
 
         pdto = service.updateProduct(productname, pdto);
         return ResponseEntity.ok(pdto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProduct(@PathVariable Long id){
+    public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
         String deletedProduct = service.deleteProduct(id);
         return ResponseEntity.ok("Product: \"" + deletedProduct + "\"deleted from database");
     }

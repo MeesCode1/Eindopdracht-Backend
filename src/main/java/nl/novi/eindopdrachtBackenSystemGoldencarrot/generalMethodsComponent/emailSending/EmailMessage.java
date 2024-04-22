@@ -2,25 +2,25 @@ package nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.ema
 
 public class EmailMessage {
 
-    private String to;
+    private String toAddress;
     private String subject;
     private String message;
 
     public EmailMessage() {
     }
 
-    public EmailMessage(String to, String subject, String message) {
-        this.to = to;
+    public EmailMessage(String toAddress, String subject, String message) {
+        this.toAddress = toAddress;
         this.subject = subject;
         this.message = message;
     }
 
-    public String getTo() {
-        return to;
+    public String getToAddress() {
+        return toAddress;
     }
 
-    public void setTo(String to) {
-        this.to = to;
+    public void setToAddress(String toAddress) {
+        this.toAddress = toAddress;
     }
 
     public String getSubject() {

@@ -1,8 +1,6 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.controllers;
 
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Order;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.InvoiceService;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.OrderService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,7 +16,7 @@ public class InvoiceController {
 
     private final InvoiceService service;
 
-    public InvoiceController(InvoiceService service){
+    public InvoiceController(InvoiceService service) {
         this.service = service;
     }
 

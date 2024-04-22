@@ -10,12 +10,12 @@ public class CustomerDto {
     public Long id;
     @NotBlank
     public String firstName;
-   @NotBlank
-   public String lastName;
-   @NotBlank
+    @NotBlank
+    public String lastName;
+    @NotBlank
     public String company;
-   @NotBlank
-   public String address;
+    @NotBlank
+    public String address;
     @Past
     public LocalDate dob;
     @Email

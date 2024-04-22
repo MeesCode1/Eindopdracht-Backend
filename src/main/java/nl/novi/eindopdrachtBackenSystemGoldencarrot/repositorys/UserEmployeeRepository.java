@@ -8,5 +8,6 @@ import java.util.Optional;
 public interface UserEmployeeRepository extends CrudRepository<UserEmployee, Long> {
 
     Optional<UserEmployee> findByUsername(String username);
+
     Optional<UserEmployee> findByEmployeeNumber(Long employeeNumber);
 }

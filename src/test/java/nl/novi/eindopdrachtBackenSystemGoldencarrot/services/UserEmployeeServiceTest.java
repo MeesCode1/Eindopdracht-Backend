@@ -39,19 +39,19 @@ class UserEmployeeServiceTest {
         List<Role> roles = new ArrayList<>();
         roles.add(role1);
 
-            UserEmployee userEmployee = new UserEmployee();
-                userEmployee.setEmployeeNumber(1L);
-                userEmployee.setUsername("GuusMeeuwis");
-                userEmployee.setPassword("topsecret");
-                userEmployee.setFirstName("Guus");
-                userEmployee.setLastName("Meeuwis");
-                userEmployee.setDob(LocalDate.of(1972,02,23));
-                userEmployee.setAddress("Muziekweg 38 Eindhoven");
-                userEmployee.setPhoneNumb("+31622772277");
-                userEmployee.setEmailAddress("test mail@mail.com");
-                userEmployee.setBankAccount("NL25INGB0003123456");
-                userEmployee.setFunction("CEO");
-                userEmployee.setRoles(roles);
+        UserEmployee userEmployee = new UserEmployee();
+        userEmployee.setEmployeeNumber(1L);
+        userEmployee.setUsername("GuusMeeuwis");
+        userEmployee.setPassword("topsecret");
+        userEmployee.setFirstName("Guus");
+        userEmployee.setLastName("Meeuwis");
+        userEmployee.setDob(LocalDate.of(1972, 02, 23));
+        userEmployee.setAddress("Muziekweg 38 Eindhoven");
+        userEmployee.setPhoneNumb("+31622772277");
+        userEmployee.setEmailAddress("test mail@mail.com");
+        userEmployee.setBankAccount("NL25INGB0003123456");
+        userEmployee.setFunction("CEO");
+        userEmployee.setRoles(roles);
 
         Mockito.when(repos.findByEmployeeNumber(any())).thenReturn(Optional.of(userEmployee));
 

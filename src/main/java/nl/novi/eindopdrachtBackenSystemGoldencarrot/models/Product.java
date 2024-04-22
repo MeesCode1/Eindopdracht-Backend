@@ -72,10 +72,11 @@ public class Product {
         this.inStock -= inStock;
     }
 
-    public void restoreInStockForChangedOrder(int inStock){
+    public void restoreInStockForChangedOrder(int inStock) {
         this.inStock += inStock;
     }
-    public void setInStock(int inStock){
+
+    public void setInStock(int inStock) {
         this.inStock = inStock;
     }
 

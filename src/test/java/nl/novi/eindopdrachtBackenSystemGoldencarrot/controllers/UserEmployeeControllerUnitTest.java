@@ -24,51 +24,51 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 
-    @WebMvcTest(UserEmployeeController.class)
-    @ActiveProfiles("test")
-    class UserEmployeeControllerUnitTest {
+@WebMvcTest(UserEmployeeController.class)
+@ActiveProfiles("test")
+class UserEmployeeControllerUnitTest {
 
-        @Autowired
-        MockMvc mockMvc;
+    @Autowired
+    MockMvc mockMvc;
 
-        @MockBean
-        JwtService jwtService;
+    @MockBean
+    JwtService jwtService;
 
-        @MockBean
-        UserEmployeeService service;
+    @MockBean
+    UserEmployeeService service;
 
-        @Test
-        @WithMockUser(username = "testUser", roles = "JOKERCEO")
-        void shouldRetrieveCorrectCustomer() throws Exception {
+    @Test
+    @WithMockUser(username = "testUser", roles = "JOKERCEO")
+    void shouldRetrieveCorrectCustomer() throws Exception {
 
-            String role1 = "CEO";
-            List<String> roles = new ArrayList<>();
-            roles.add(role1);
+        String role1 = "CEO";
+        List<String> roles = new ArrayList<>();
+        roles.add(role1);
 
-            UserEmployeeDto udto = new UserEmployeeDto();
-            udto.setEmployeeNumber(1L);
-            udto.setUsername("GuusMeeuwis");
-            udto.setPassword("topsecret");
-            udto.setFirstName("Guus");
-            udto.setLastName("Meeuwis");
-            udto.setDob(LocalDate.of(1972,02,23));
-            udto.setAddress("Muziekweg 38 Eindhoven");
-            udto.setPhoneNumb("+31622772277");
-            udto.setEmailAddress("test mail@mail.com");
-            udto.setBankAccount("NL25INGB0003123456");
-            udto.setFunction("CEO");
-            udto.setRoles(roles);
+        UserEmployeeDto udto = new UserEmployeeDto();
+        udto.setEmployeeNumber(1L);
+        udto.setUsername("GuusMeeuwis");
+        udto.setPassword("topsecret");
+        udto.setFirstName("Guus");
+        udto.setLastName("Meeuwis");
+        udto.setDob(LocalDate.of(1972, 02, 23));
+        udto.setAddress("Muziekweg 38 Eindhoven");
+        udto.setPhoneNumb("+31622772277");
+        udto.setEmailAddress("test mail@mail.com");
+        udto.setBankAccount("NL25INGB0003123456");
+        udto.setFunction("CEO");
+        udto.setRoles(roles);
 
-            Mockito.when(service.getUserEmployee(1L)).thenReturn(udto);
+        Mockito.when(service.getUserEmployee(1L)).thenReturn(udto);
 
-            this.mockMvc
-                    .perform(MockMvcRequestBuilders.get("/users_employees/1"))
-                    .andDo(MockMvcResultHandlers.print())
-                    .andExpect(MockMvcResultMatchers.status().isOk())
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.username", is("GuusMeeuwis")))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumb", is("+31622772277")))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.bankAccount", is("NL25INGB0003123456")))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.address", is("Muziekweg 38 Eindhoven")))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.roles[0]", is("CEO")));
-        }
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/users_employees/1"))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.username", is("GuusMeeuwis")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumb", is("+31622772277")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.bankAccount", is("NL25INGB0003123456")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.address", is("Muziekweg 38 Eindhoven")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.roles[0]", is("CEO")));
+    }
 }

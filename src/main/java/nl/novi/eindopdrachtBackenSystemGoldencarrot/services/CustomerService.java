@@ -6,7 +6,6 @@ import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundEx
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.ModelMapperConfig;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Customer;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.CustomerRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,11 +17,11 @@ public class CustomerService {
     private final CustomerRepository repos;
 
 
-    public CustomerService(CustomerRepository repos){
+    public CustomerService(CustomerRepository repos) {
         this.repos = repos;
     }
 
-    public CustomerDto createCustomer(CustomerDto cDto){
+    public CustomerDto createCustomer(CustomerDto cDto) {
 
         Customer c = ModelMapperConfig.mappingToEntityCustomer(cDto);
 
@@ -34,20 +33,20 @@ public class CustomerService {
 
     }
 
-    public CustomerDto getCustomerByCompany(String company){
-        Customer c = repos.findByCompany(company).orElseThrow(()->
+    public CustomerDto getCustomerByCompany(String company) {
+        Customer c = repos.findByCompany(company).orElseThrow(() ->
                 new ResourceNotFoundException("customer not found"));
 
         CustomerDto cdto = ModelMapperConfig.mappingToDtoCustomer(c);
         return cdto;
     }
 
-    public List<CustomerDto> getAllCustomers(){
+    public List<CustomerDto> getAllCustomers() {
         Iterable<Customer> customers = repos.findAll();
 
         List<CustomerDto> cDtos = new ArrayList<>();
 
-        for(Customer c: customers){
+        for (Customer c : customers) {
 
             CustomerDto cdto = ModelMapperConfig.mappingToDtoCustomer(c);
 
@@ -56,8 +55,8 @@ public class CustomerService {
         return cDtos;
     }
 
-    public CustomerDto updateCustomer(String company, CustomerDto cdto){
-        Customer c = repos.findByCompany(company).orElseThrow(()->
+    public CustomerDto updateCustomer(String company, CustomerDto cdto) {
+        Customer c = repos.findByCompany(company).orElseThrow(() ->
                 new ResourceNotFoundException("Customer not found"));
 
         if (cdto.firstName != null) {
@@ -66,17 +65,22 @@ public class CustomerService {
         if (cdto.lastName != null) {
             c.setLastName(cdto.lastName);
         }
-        if (cdto.company != null){
+        if (cdto.company != null) {
             c.setCompany(cdto.company);
-        }if (cdto.address != null) {
+        }
+        if (cdto.address != null) {
             c.setAddress(cdto.address);
-        }if (cdto.dob != null) {
+        }
+        if (cdto.dob != null) {
             c.setDob(cdto.dob);
-        }if (cdto.emailAddress != null) {
+        }
+        if (cdto.emailAddress != null) {
             c.setEmailAddress(cdto.emailAddress);
-        }if (cdto.phoneNumber != null) {
+        }
+        if (cdto.phoneNumber != null) {
             c.setPhoneNumber(cdto.phoneNumber);
-        }if (cdto.bankAccount != null) {
+        }
+        if (cdto.bankAccount != null) {
             c.setBankAccount(cdto.bankAccount);
         }
 
@@ -86,8 +90,8 @@ public class CustomerService {
         return cdto;
     }
 
-    public String deleteCustomer(Long id){
-        Customer c = repos.findById(id).orElseThrow(()->
+    public String deleteCustomer(Long id) {
+        Customer c = repos.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Customer not found"));
         String companyName = c.getCompany();
         repos.delete(c);

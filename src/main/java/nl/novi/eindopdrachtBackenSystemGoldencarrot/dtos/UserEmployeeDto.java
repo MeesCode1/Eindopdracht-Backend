@@ -27,14 +27,14 @@ public class UserEmployeeDto {
     public String phoneNumb;
     @Email
     public String emailAddress;
-   @NotBlank
-   @Size(min = 7, max = 20)
-   public String bankAccount;
-   @NotBlank
-   public String function;
-   @NotEmpty
-   @Size(min = 1)
-   public List<String> roles = new ArrayList<>();
+    @NotBlank
+    @Size(min = 7, max = 20)
+    public String bankAccount;
+    @NotBlank
+    public String function;
+    @NotEmpty
+    @Size(min = 1)
+    public List<String> roles = new ArrayList<>();
 
 
     public String getAddress() {

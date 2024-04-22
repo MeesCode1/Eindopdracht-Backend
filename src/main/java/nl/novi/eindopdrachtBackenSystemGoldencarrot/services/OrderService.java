@@ -6,15 +6,14 @@ import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.OrderItemLineDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundException;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.ModelMapperConfig;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.SetTimeAndDate;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.emailSending.EmailMessage;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.emailSending.EmailSender;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Customer;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Order;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.OrderItemLine;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.CustomerRepository;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.OrderItemLineRepository;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.OrderRepository;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,18 +21,15 @@ import java.util.List;
 @Service
 public class OrderService {
     private final OrderRepository repos;
-    private final OrderItemLineRepository ilRepos;
     private final CustomerRepository cRepos;
     private final OrderItemLineService ilService;
 
     private final EmailSender emailSender;
 
 
-    public OrderService(OrderRepository repos, CustomerRepository cRepos, OrderItemLineRepository
-            ilRepos, OrderItemLineService ilService, EmailSender emailSender) {
+    public OrderService(OrderRepository repos, CustomerRepository cRepos, OrderItemLineService ilService, EmailSender emailSender) {
 
         this.repos = repos;
-        this.ilRepos = ilRepos;
         this.cRepos = cRepos;
         this.ilService = ilService;
         this.emailSender = emailSender;
@@ -56,7 +52,7 @@ public class OrderService {
 
         List<OrderItemLine> orderItemLines = new ArrayList<>();
 
-        for (OrderItemLineDto ildto: odto.products){
+        for (OrderItemLineDto ildto : odto.products) {
             OrderItemLine il = ilService.createOrderItemLine(orderIdForIlines, ildto);
             orderItemLines.add(il);
         }
@@ -73,14 +69,15 @@ public class OrderService {
 
 
         emailSender.sendEmail("finance-thegoldencarrot_novi@outlook.com",
-                             "Novi44code88",
-                             "finance-thegoldencarrot_novi@outlook.com",
-                               "New Invoice",
-                              "Hi best employee of finance," + "\n" +
-                                     "\n New invoice to download!" +
-                                     "\n InvoiceNumb: " + order.getId() +
-                                     "\n At: " + order.getOrderDate() +
-                                     "\n " + order.getOrderTime());
+                "Novi44code88",
+                new EmailMessage(
+                "finance-thegoldencarrot_novi@outlook.com",
+                "New Invoice",
+                "Hi best employee of finance," + "\n" +
+                        "\n New invoice to download!" +
+                        "\n InvoiceNumb: " + order.getId() +
+                        "\n At: " + order.getOrderDate() +
+                        "\n " + order.getOrderTime()));
 
         return ModelMapperConfig.mappingToDtoOrder(order);
     }
@@ -127,10 +124,10 @@ public class OrderService {
         List<Order> orders = new ArrayList<>();
 
         for (OrderItemLine il : itemlines) {
-                Order order = repos.findById(il.getOrder().getId()).orElseThrow(()
-                        -> new ResourceNotFoundException("Order not found"));
-                orders.add(order);
-            }
+            Order order = repos.findById(il.getOrder().getId()).orElseThrow(()
+                    -> new ResourceNotFoundException("Order not found"));
+            orders.add(order);
+        }
 
         List<OrderDto> odtos = new ArrayList<>();
         for (Order order : orders) {
@@ -153,9 +150,9 @@ public class OrderService {
         return odtos;
     }
 
-    public OrderDto updateOrder(Long id, OrderDto newOdto){
+    public OrderDto updateOrder(Long id, OrderDto newOdto) {
 
-        for (OrderItemLineDto ildto: newOdto.products){
+        for (OrderItemLineDto ildto : newOdto.products) {
             ilService.updateOrderItemline(id, ildto);
         }
 
@@ -179,7 +176,7 @@ public class OrderService {
         Order order = repos.findById(id).orElseThrow(() -> new ResourceNotFoundException
                 ("order not found"));
 
-        for (OrderItemLine il: order.getProducts()){
+        for (OrderItemLine il : order.getProducts()) {
             ilService.deleteOrderItemLine(il.getProduct().getName(), id);
         }
         repos.deleteById(id);

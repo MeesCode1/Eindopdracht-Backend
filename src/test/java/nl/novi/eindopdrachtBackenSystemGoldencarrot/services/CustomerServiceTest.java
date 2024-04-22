@@ -17,35 +17,34 @@ import static org.mockito.ArgumentMatchers.anyString;
 
 @ExtendWith(MockitoExtension.class)
 //@SpringBootTest
-    class CustomerServiceTest {
+class CustomerServiceTest {
 
-        @Mock
-        CustomerRepository repos;
-        @InjectMocks
-        CustomerService service;
-
-
-
-        @Test
-        void shouldReturnCorrectCustomer() {
-            Customer c = new Customer();
-            c.setFirstName("Harrie");
-            c.setLastName("Snijders");
-            c.setCompany("Bistro beachclub");
-            c.setPhoneNumber("0688889999");
+    @Mock
+    CustomerRepository repos;
+    @InjectMocks
+    CustomerService service;
 
 
-            Mockito.when(repos.findByCompany(anyString())).thenReturn(Optional.of(c));
+    @Test
+    void shouldReturnCorrectCustomer() {
+        Customer c = new Customer();
+        c.setFirstName("Harrie");
+        c.setLastName("Snijders");
+        c.setCompany("Bistro beachclub");
+        c.setPhoneNumber("0688889999");
 
 
-            CustomerDto savedCdto = new CustomerDto();
-            savedCdto = service.getCustomerByCompany("Bistro beachclub");
+        Mockito.when(repos.findByCompany(anyString())).thenReturn(Optional.of(c));
 
-            assertEquals("Harrie", savedCdto.firstName);
-            assertEquals("Snijders", savedCdto.lastName);
-            assertEquals("Bistro beachclub", savedCdto.company);
-            assertEquals("0688889999", savedCdto.phoneNumber);
-        }
+
+        CustomerDto savedCdto = new CustomerDto();
+        savedCdto = service.getCustomerByCompany("Bistro beachclub");
+
+        assertEquals("Harrie", savedCdto.firstName);
+        assertEquals("Snijders", savedCdto.lastName);
+        assertEquals("Bistro beachclub", savedCdto.company);
+        assertEquals("0688889999", savedCdto.phoneNumber);
+    }
 
     @Test
     void shouldThrowExceptionWhenCompanyNotFound() {
@@ -55,4 +54,4 @@ import static org.mockito.ArgumentMatchers.anyString;
             service.getCustomerByCompany("NonexistentCompany");
         });
     }
-    }
+}

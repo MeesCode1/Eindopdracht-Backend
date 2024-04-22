@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class SetTimeAndDate {
 
-    public static Order SetOrderDateAndTime(Order order){
+    public static Order SetOrderDateAndTime(Order order) {
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");

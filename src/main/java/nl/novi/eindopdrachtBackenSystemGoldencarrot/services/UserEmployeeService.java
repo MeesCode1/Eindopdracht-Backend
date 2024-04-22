@@ -22,7 +22,6 @@ public class UserEmployeeService {
     private final PasswordEncoder pwEncoder;
 
 
-
     public UserEmployeeService(UserEmployeeRepository repos, RoleRepository roleRepos,
                                PasswordEncoder pwEncoder) {
 
@@ -34,7 +33,7 @@ public class UserEmployeeService {
     public UserEmployeeDto createUser(UserEmployeeDto udto) {
 
         Optional<UserEmployee> existingUser = repos.findByUsername(udto.username);
-        if(existingUser.isPresent()){
+        if (existingUser.isPresent()) {
             throw new IllegalArgumentException("Gebruiker \"" + udto.getUsername() + "\" bestaat al\n" +
                     "kies een andere gebruikersnaam");
         }
@@ -58,12 +57,13 @@ public class UserEmployeeService {
 
     }
 
-    public UserEmployeeDto getUserEmployee(Long employeeNumber){
-        UserEmployee userEmployee = repos.findByEmployeeNumber(employeeNumber).orElseThrow(()->
+    public UserEmployeeDto getUserEmployee(Long employeeNumber) {
+        UserEmployee userEmployee = repos.findByEmployeeNumber(employeeNumber).orElseThrow(() ->
                 new ResourceNotFoundException("Employee not found"));
 
         return ModelMapperConfig.mappingToDtoUserEmployee(userEmployee);
     }
+
     public List<UserEmployeeDto> getAllUserEmployees() {
 
         List<UserEmployeeDto> udtos = new ArrayList<>();
@@ -104,21 +104,21 @@ public class UserEmployeeService {
         if (udto.phoneNumb != null) {
             userEmployee.setPhoneNumb(udto.phoneNumb);
         }
-            if (udto.emailAddress != null) {
-                userEmployee.setEmailAddress(udto.emailAddress);
-            }
-            if (udto.bankAccount != null) {
-                userEmployee.setBankAccount(udto.bankAccount);
-            }
-            if (udto.function != null) {
-                userEmployee.setFunction(udto.function);
-            }
-
-
-            repos.save(userEmployee);
-            udto = ModelMapperConfig.mappingToDtoUserEmployee(userEmployee);
-
-            return udto;
+        if (udto.emailAddress != null) {
+            userEmployee.setEmailAddress(udto.emailAddress);
+        }
+        if (udto.bankAccount != null) {
+            userEmployee.setBankAccount(udto.bankAccount);
+        }
+        if (udto.function != null) {
+            userEmployee.setFunction(udto.function);
         }
 
+
+        repos.save(userEmployee);
+        udto = ModelMapperConfig.mappingToDtoUserEmployee(userEmployee);
+
+        return udto;
     }
+
+}
