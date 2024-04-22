@@ -1,10 +1,10 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.emailSending;
 
 import jakarta.mail.*;
-import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.stereotype.Component;
+
 import java.util.Date;
 import java.util.Properties;
 
@@ -13,10 +13,8 @@ public class EmailSender {
 
     public void sendEmail(final String userName,
                           final String password,
-                          String toAddress,
-                          String subject,
-                          String message) throws AddressException,
-                                                 MessagingException {
+                          final EmailMessage emailMessage) throws
+            MessagingException {
 
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.office365.com");
@@ -30,12 +28,12 @@ public class EmailSender {
         Message msg = new MimeMessage(session);
 
         msg.setFrom(new InternetAddress(userName));
-        InternetAddress[] toAddresses = { new InternetAddress(toAddress) };
+        InternetAddress[] toAddresses = {new InternetAddress(emailMessage.getToAddress())};
         msg.setRecipients(Message.RecipientType.TO, toAddresses);
-        msg.setSubject(subject);
+        msg.setSubject(emailMessage.getSubject());
         msg.setSentDate(new Date());
 
-        msg.setText(message);
+        msg.setText(emailMessage.getMessage());
 
         Transport t = session.getTransport("smtp");
         t.connect(userName, password);

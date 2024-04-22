@@ -1,10 +1,8 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.controllers;
 
-
 import jakarta.validation.Valid;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.UserEmployeeDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.BindingValidator;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.UserEmployee;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.UserEmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,12 +42,12 @@ public class UserEmployeeController {
     }
 
     @GetMapping
-    public List<UserEmployeeDto> getUsers(){
+    public List<UserEmployeeDto> getUsers() {
         return service.getAllUserEmployees();
     }
 
     @GetMapping("/{employeeNumber}")
-    public ResponseEntity<UserEmployeeDto> getCustomerByUsername(@PathVariable Long employeeNumber){
+    public ResponseEntity<UserEmployeeDto> getCustomerByUsername(@PathVariable Long employeeNumber) {
 
         UserEmployeeDto udto = service.getUserEmployee(employeeNumber);
 
@@ -58,11 +56,11 @@ public class UserEmployeeController {
 
     @PutMapping("/{employeeNumber}")
     public ResponseEntity<UserEmployeeDto> updateUserEmployee(@PathVariable Long employeeNumber,
-                                                              @RequestBody UserEmployeeDto udto){
+                                                              @RequestBody UserEmployeeDto udto) {
 
         udto = service.updateUserEmployee(employeeNumber, udto);
         return ResponseEntity.ok(udto);
-        }
     }
+}
 
 

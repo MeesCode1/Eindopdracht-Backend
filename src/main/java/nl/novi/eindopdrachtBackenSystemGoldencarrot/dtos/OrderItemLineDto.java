@@ -6,14 +6,14 @@ import jakarta.validation.constraints.NotBlank;
 public class OrderItemLineDto {
 
     public Long id;
-   @NotBlank
-   public String productName;
+    @NotBlank
+    public String productName;
 
     public String shortDescriptionProduct;
 
-
     public double productPriceInEur;
-   @NotBlank public int quantity;
+    @NotBlank
+    public int quantity;
 
     public double totalPrice;
 

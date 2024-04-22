@@ -41,12 +41,6 @@ public class Role {
         this.usersEmployees = usersEmployees;
     }
 
-    //    public Collection<nl.meesnovi.backendEindopdrDos.EindopdrachtBackendDos.models.UserEmployee> getUserEmployee() {
-//        return userEmployees;
-//    }
-//
-//    public void setUserEmployee(Collection<nl.meesnovi.backendEindopdrDos.EindopdrachtBackendDos.models.UserEmployee> userEmployees) {
-//        userEmployee = userEmployees;
-//    }
+
 }
 

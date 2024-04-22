@@ -22,9 +22,8 @@ public class CustomerRepositoryTest {
     CustomerRepository repos;
 
 
-
     @Test
-    void shouldSaveAndReturnCustomer(){
+    void shouldSaveAndReturnCustomer() {
 
         Customer c = new Customer();
         c.setFirstName("Harrie");
@@ -35,11 +34,11 @@ public class CustomerRepositoryTest {
         Customer savedCustomer = repos.save(c);
 
         Assertions.assertNotNull(savedCustomer);
-        Assertions.assertTrue (savedCustomer.getId() > 0);
+        Assertions.assertTrue(savedCustomer.getId() > 0);
     }
 
     @Test
-    void shouldSaveAndReturnAllCustomers(){
+    void shouldSaveAndReturnAllCustomers() {
 
         Customer c = new Customer();
         c.setFirstName("Harrie");
@@ -56,31 +55,31 @@ public class CustomerRepositoryTest {
         repos.save(c);
         repos.save(c2);
 
-        List<Customer>savedCustomers = repos.findAll();
+        List<Customer> savedCustomers = repos.findAll();
 
 
         Assertions.assertNotNull(savedCustomers);
-        Assertions.assertTrue (savedCustomers.size() == 2);
+        Assertions.assertTrue(savedCustomers.size() == 2);
         assertEquals(c.getCompany(), savedCustomers.get(0).getCompany());
         assertEquals(c2.getId(), savedCustomers.get(1).getId());
     }
 
-@Test
-    void shouldReturnCorrectCustomerByCompany(){
+    @Test
+    void shouldReturnCorrectCustomerByCompany() {
 
-    Customer c = new Customer();
-    c.setFirstName("Harrie");
-    c.setLastName("Snijders");
-    c.setCompany("Bistro beachclub");
-    c.setPhoneNumber("0688889999");
+        Customer c = new Customer();
+        c.setFirstName("Harrie");
+        c.setLastName("Snijders");
+        c.setCompany("Bistro beachclub");
+        c.setPhoneNumber("0688889999");
 
-    repos.save(c);
+        repos.save(c);
 
-    Customer resultCustomer = repos.findByCompany("Bistro beachclub").get();
+        Customer resultCustomer = repos.findByCompany("Bistro beachclub").get();
 
-    Assertions.assertNotNull(resultCustomer);
-    assertEquals(c.getFirstName(), resultCustomer.getFirstName());
-}
+        Assertions.assertNotNull(resultCustomer);
+        assertEquals(c.getFirstName(), resultCustomer.getFirstName());
+    }
 
 
 }

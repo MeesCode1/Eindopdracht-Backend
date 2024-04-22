@@ -19,7 +19,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 @ActiveProfiles("test")
 class CustomerIntegrationTest {
 
-     @Autowired
+    @Autowired
     MockMvc mockMvc;
 
     @Test

@@ -18,39 +18,40 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
 import static org.hamcrest.Matchers.is;
 
 @WebMvcTest(CustomerController.class)
 @ActiveProfiles("test")
-    class CustomerControllerUnitTest {
+class CustomerControllerUnitTest {
 
-        @Autowired
-        MockMvc mockMvc;
+    @Autowired
+    MockMvc mockMvc;
 
-        @MockBean
-        JwtService jwtService;
+    @MockBean
+    JwtService jwtService;
 
-        @MockBean
-        CustomerService customerService;
+    @MockBean
+    CustomerService customerService;
 
-        @Test  //SERVICE-DSK
-        @WithMockUser(username = "testUser", roles = "JOKERCEO")
-        void shouldRetrieveCorrectCustomer() throws Exception {
+    @Test  //SERVICE-DSK
+    @WithMockUser(username = "testUser", roles = "JOKERCEO")
+    void shouldRetrieveCorrectCustomer() throws Exception {
 
-            CustomerDto cdto = new CustomerDto();
-            cdto.firstName = "Arjen";
-            cdto.lastName = "Robben";
-            cdto.company = "PSV";
-            cdto.phoneNumber = "0699998765";
+        CustomerDto cdto = new CustomerDto();
+        cdto.firstName = "Arjen";
+        cdto.lastName = "Robben";
+        cdto.company = "PSV";
+        cdto.phoneNumber = "0699998765";
 
-            Mockito.when(customerService.getCustomerByCompany("PSV")).thenReturn(cdto);
+        Mockito.when(customerService.getCustomerByCompany("PSV")).thenReturn(cdto);
 
-            this.mockMvc
-                    .perform(MockMvcRequestBuilders.get("/customers/PSV"))
-                    .andDo(MockMvcResultHandlers.print())
-                    .andExpect(MockMvcResultMatchers.status().isOk())
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.lastName", is("Robben")))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.company", is("PSV")))
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber", is("0699998765")));
-        }
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/customers/PSV"))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.lastName", is("Robben")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.company", is("PSV")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber", is("0699998765")));
     }
+}

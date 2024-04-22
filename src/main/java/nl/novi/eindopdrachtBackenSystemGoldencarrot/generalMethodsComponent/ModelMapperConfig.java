@@ -3,9 +3,7 @@ package nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.*;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.*;
 import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;

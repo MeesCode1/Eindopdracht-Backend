@@ -6,7 +6,6 @@ import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.Mode
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Product;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.ProductRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,7 +100,7 @@ public class ProductService {
 
 
     // side methods
-    public void lowerInStockNewOrder(String productName, int quantity){
+    public void lowerInStockNewOrder(String productName, int quantity) {
 
         Product p = repos.findByName(productName).orElseThrow(() ->
                 new ResourceNotFoundException("No product familiar with name \""
@@ -115,7 +114,7 @@ public class ProductService {
         }
     }
 
-    public void restoreInStockForChangedOrder(String productName, int quantity){
+    public void restoreInStockForChangedOrder(String productName, int quantity) {
         Product p = repos.findByName(productName).orElseThrow(() ->
                 new ResourceNotFoundException("product not found"));
 

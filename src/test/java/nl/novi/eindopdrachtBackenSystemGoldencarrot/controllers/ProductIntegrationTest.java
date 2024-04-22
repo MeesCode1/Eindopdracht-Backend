@@ -14,34 +14,34 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 
-    @SpringBootTest
-    @AutoConfigureMockMvc(addFilters = false)
-    @ActiveProfiles("test")
-    public class ProductIntegrationTest {
+@SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
+@ActiveProfiles("test")
+public class ProductIntegrationTest {
 
-        @Autowired
-        MockMvc mockMvc;
+    @Autowired
+    MockMvc mockMvc;
 
-        @Test
-        void shouldCreateCorrectProduct() throws Exception {
+    @Test
+    void shouldCreateCorrectProduct() throws Exception {
 
-            String requestJson = """
-                    {
-                       "name": "Dorade side",
-                       "category": "fish",
-                       "priceInEur": "36.12",
-                       "packedPerUnit": "c.a 600gr",
-                       "inStock": 7,
-                       "description": "fish descr",
-                       "shortDescription": "fish short descr"
-                    }
-                    """;
+        String requestJson = """
+                {
+                   "name": "Dorade side",
+                   "category": "fish",
+                   "priceInEur": "36.12",
+                   "packedPerUnit": "c.a 600gr",
+                   "inStock": 7,
+                   "description": "fish descr",
+                   "shortDescription": "fish short descr"
+                }
+                """;
 
-            this.mockMvc
-                    .perform(MockMvcRequestBuilders.post("/products")
-                            .contentType(APPLICATION_JSON_UTF8)
-                            .content(requestJson))
-                    .andDo(MockMvcResultHandlers.print())
-                    .andExpect(MockMvcResultMatchers.status().isCreated());
-        }
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.post("/products")
+                        .contentType(APPLICATION_JSON_UTF8)
+                        .content(requestJson))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isCreated());
+    }
 }

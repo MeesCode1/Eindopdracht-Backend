@@ -27,7 +27,7 @@ public class OrderItemLineService {
         this.pService = productService;
     }
 
-    public OrderItemLine createOrderItemLine(Long orderId, OrderItemLineDto ildto){
+    public OrderItemLine createOrderItemLine(Long orderId, OrderItemLineDto ildto) {
 
         OrderItemLine il = new OrderItemLine();
         il.setOrder(oRepos.findById(orderId).orElseThrow(() ->
@@ -58,7 +58,7 @@ public class OrderItemLineService {
 
         if (itemLineExistInOrder & newIldto.quantity != 0) {
 
-            pService.restoreInStockForChangedOrder(p.getName(),ilToUpdate.getQuantity());
+            pService.restoreInStockForChangedOrder(p.getName(), ilToUpdate.getQuantity());
 
             pService.lowerInStockNewOrder(p.getName(), newIldto.quantity);
             ilToUpdate.setQuantity(newIldto.quantity);
@@ -66,18 +66,16 @@ public class OrderItemLineService {
             ilToUpdate.setTotalPrice(ilToUpdate.calculateTotalPrice());
 
             repos.save(ilToUpdate);
-        }
-        else if (itemLineExistInOrder & newIldto.quantity == 0) {
+        } else if (itemLineExistInOrder & newIldto.quantity == 0) {
             deleteOrderItemLine(p.getName(), orderId);
-        }
-        else {
+        } else {
             createOrderItemLine(orderId, newIldto);
         }
     }
 
-    public void deleteOrderItemLine(String productName, Long orderId){
-        OrderItemLine il =  repos.findByOrder_IdAndProduct_Name(orderId, productName)
-                .orElseThrow(() ->new ResourceNotFoundException("not found"));
+    public void deleteOrderItemLine(String productName, Long orderId) {
+        OrderItemLine il = repos.findByOrder_IdAndProduct_Name(orderId, productName)
+                .orElseThrow(() -> new ResourceNotFoundException("not found"));
 
         Product p = pRepos.findByName(productName).orElseThrow(() -> new
                 ResourceNotFoundException("product not familiar"));
@@ -92,17 +90,5 @@ public class OrderItemLineService {
     }
 
 
-    // side methods
-
-    //handig?...
-//    double calulateTotalPriceOrderItemLine(OrderItemLineDto ildto) {
-//
-//    Product p = pRepos.findByName(ildto.productName).orElseThrow(() ->
-//            new ResourceNotFoundException("Product not familiar"));
-//
-//        double totalPriceOrderItemLine = p.getPriceInEur() * ildto.quantity;
-//
-//        return totalPriceOrderItemLine;
-    // }
 }
 

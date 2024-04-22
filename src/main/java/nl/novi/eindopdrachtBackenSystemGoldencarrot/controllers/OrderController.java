@@ -1,6 +1,5 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.controllers;
 
-
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.OrderDto;
@@ -9,10 +8,8 @@ import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
@@ -23,7 +20,7 @@ public class OrderController {
 
     private final OrderService service;
 
-    public OrderController(OrderService service){
+    public OrderController(OrderService service) {
         this.service = service;
     }
 
@@ -45,42 +42,35 @@ public class OrderController {
 
 
     @GetMapping()
-    public List<OrderDto> getOrders(){
+    public List<OrderDto> getOrders() {
         return service.getOrders();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderDto> getOrderById(@PathVariable Long id){
+    public ResponseEntity<OrderDto> getOrderById(@PathVariable Long id) {
         OrderDto odto = service.getOrderById(id);
         return ResponseEntity.ok(odto);
     }
 
     @GetMapping("/customer/{customerCompany}")
-    public List<OrderDto> getOrdersFromCustomer(@PathVariable String customerCompany){
+    public List<OrderDto> getOrdersFromCustomer(@PathVariable String customerCompany) {
         return service.getOrdersByCustomer(customerCompany);
     }
 
     @GetMapping("/product/{productName}")
-    public List<OrderDto> getOrdersByProduct(@PathVariable String productName){
+    public List<OrderDto> getOrdersByProduct(@PathVariable String productName) {
         return service.getOrdersByProduct(productName);
     }
 
     @GetMapping("/date/{orderDate}")
-    public List<OrderDto> getOrdersByDate(@PathVariable LocalDate orderDate){
+    public List<OrderDto> getOrdersByDate(@PathVariable LocalDate orderDate) {
         return service.getOrdersByOrderDate(orderDate);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateOrder(@PathVariable Long id, @RequestBody
-    OrderDto newOdto, BindingResult br){
+    OrderDto newOdto, BindingResult br) {
 
-//        if (br.hasFieldErrors()) {
-//            StringBuilder sb = new StringBuilder();
-//            for (FieldError fe : br.getFieldErrors()) {
-//                sb.append(fe.getField() + ": ");
-//                sb.append(fe.getDefaultMessage() + "\n");
-//            }
-//            return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
         String fieldErrors = BindingValidator.validateInput(br);
         if (fieldErrors != null) {
             return new ResponseEntity<>(fieldErrors, HttpStatus.BAD_REQUEST);
@@ -91,7 +81,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProduct(@PathVariable Long id){
+    public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
         Long deletedOrder = service.deleteOrder(id);
         return ResponseEntity.ok("Order with id: \"" + deletedOrder + "\"deleted from database");
     }

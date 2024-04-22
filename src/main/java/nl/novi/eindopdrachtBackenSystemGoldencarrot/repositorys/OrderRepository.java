@@ -12,6 +12,7 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 
 
     Optional<Order> findById(Long id);
+
     List<Order> findByOrderDate(LocalDate orderDate);
 
     Iterable<Order> findByCustomer_Company(String company);

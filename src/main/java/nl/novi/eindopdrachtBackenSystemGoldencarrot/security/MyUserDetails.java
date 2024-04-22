@@ -14,7 +14,7 @@ public class MyUserDetails implements UserDetails {
 
     private final UserEmployee user;
 
-    public MyUserDetails(UserEmployee user){
+    public MyUserDetails(UserEmployee user) {
         this.user = user;
     }
 
@@ -22,7 +22,7 @@ public class MyUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        for (Role role: user.getRoles()){
+        for (Role role : user.getRoles()) {
             authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
         }
         return authorities;

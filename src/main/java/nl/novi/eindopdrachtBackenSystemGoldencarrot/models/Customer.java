@@ -1,9 +1,6 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.models;
 
-
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +26,6 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
-    //String[] Invoices
 
 
     public String getAddress() {
@@ -99,8 +95,9 @@ public class Customer {
     public String getBankAccount() {
         return bankAccount;
     }
-    public void setBankAccount(String bankAccount){
-        this.bankAccount =bankAccount;
+
+    public void setBankAccount(String bankAccount) {
+        this.bankAccount = bankAccount;
     }
 
 

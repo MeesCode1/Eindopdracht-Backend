@@ -13,10 +13,6 @@ public class OrderItemLine {
     private Long id;
     private Double totalPrice;
     private int quantity;
-    //private String productName;
-    //private int quantity;
-    //private double productPriceInEur;
-    // private String shortDescriptionProduct;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;
@@ -40,6 +36,7 @@ public class OrderItemLine {
     public void setProduct(Product product) {
         this.product = product;
     }
+
     public int getQuantity() {
         return quantity;
     }
@@ -56,7 +53,7 @@ public class OrderItemLine {
         this.totalPrice = totalPrice;
     }
 
-    public Double calculateTotalPrice(){
+    public Double calculateTotalPrice() {
         return product.getPriceInEur() * quantity;
     }
 
@@ -68,29 +65,5 @@ public class OrderItemLine {
         this.order = order;
     }
 
-
-//    public double getProductPriceInEur() {
-//        return productPriceInEur;
-//    }
-//
-//    public void setProductPriceInEur(double productPrice) {
-//        this.productPriceInEur = productPrice;
-//    }
-//
-//    public String getShortDescriptionProduct() {
-//        return shortDescriptionProduct;
-//    }
-//
-//    public void setShortDescriptionProduct(String shortDescriptionProduct) {
-//        this.shortDescriptionProduct = shortDescriptionProduct;
-//    }
-
-//    public String getProductName() {
-//        return productName;
-//    }
-//
-//    public void setProductName(String productNAme) {
-//        this.productName = productNAme;
-//    }
 
 }

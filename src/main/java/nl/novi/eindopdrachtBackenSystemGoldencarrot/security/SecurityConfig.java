@@ -55,7 +55,7 @@ public class SecurityConfig {
 
                 .requestMatchers(HttpMethod.GET, "/invoices/download/{id}").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth").permitAll()
-                .requestMatchers(HttpMethod.POST, "/users_employees").hasAnyAuthority( "CEO", "JOKER-CEO")
+                .requestMatchers(HttpMethod.POST, "/users_employees").hasAnyAuthority("CEO", "JOKER-CEO")
                 .requestMatchers(HttpMethod.GET, "/users_employees").hasAnyAuthority("FINANCE-ADM", "CEO", "JOKER-CEO")
                 .requestMatchers(HttpMethod.GET, "/users_employees/{employeenumber}").hasAnyAuthority("FINANCE-ADM", "CEO", "JOKER-CEO")
                 .requestMatchers(HttpMethod.PUT, "/users_employees/{employeenumber}").hasAnyAuthority("CEO", "JOKER-CEO")
@@ -84,7 +84,7 @@ public class SecurityConfig {
 //                .requestMatchers(HttpMethod.GET, "/invoices/download/{id}").fullyAuthenticated()
                 .requestMatchers("/**").hasAnyAuthority("SERVICE-DSK", "FINANCE-ADM", "CEO", "JOKER-CEO")
                 .anyRequest().denyAll()
-               // .anyRequest().authenticated()
+                // .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtRequestFilter(jwtService, userDetailsService()), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()

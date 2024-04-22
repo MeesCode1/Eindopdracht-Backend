@@ -22,41 +22,40 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 
-    @ExtendWith(MockitoExtension.class)
-    public class OrderItemLineServiceTest {
+@ExtendWith(MockitoExtension.class)
+public class OrderItemLineServiceTest {
 
-        @Mock
-        OrderItemLineRepository repos;
-        @InjectMocks
-        OrderItemLineService service;
-
-
-
-        @Test
-        void shouldReturnCorrectOrderItemLines() {
-
-            Order order = new Order();
-            order.setId(111L);
-            OrderItemLine il = new OrderItemLine();
-            il.setId(1l);
-            il.setOrder(order);
-
-            Order order2 = new Order();
-            order2.setId(222L);
-            OrderItemLine il2 = new OrderItemLine();
-            il2.setId(2l);
-            il2.setOrder(order2);
+    @Mock
+    OrderItemLineRepository repos;
+    @InjectMocks
+    OrderItemLineService service;
 
 
-            Mockito.when(repos.findByProduct_Name(anyString())).thenReturn(List.of(il, il2));
+    @Test
+    void shouldReturnCorrectOrderItemLines() {
+
+        Order order = new Order();
+        order.setId(111L);
+        OrderItemLine il = new OrderItemLine();
+        il.setId(1l);
+        il.setOrder(order);
+
+        Order order2 = new Order();
+        order2.setId(222L);
+        OrderItemLine il2 = new OrderItemLine();
+        il2.setId(2l);
+        il2.setOrder(order2);
 
 
-            List<OrderItemLine> resultIldtos= new ArrayList<>();
-            resultIldtos = service.getOrderItemLinesByProduct("true input");
+        Mockito.when(repos.findByProduct_Name(anyString())).thenReturn(List.of(il, il2));
 
-            assertEquals(1, resultIldtos.get(0).getId());
-            assertEquals(111, resultIldtos.get(0).getOrder().getId());
-            assertEquals(2, resultIldtos.get(1).getId());
-            assertEquals(222, resultIldtos.get(1).getOrder().getId());
-        }
+
+        List<OrderItemLine> resultIldtos = new ArrayList<>();
+        resultIldtos = service.getOrderItemLinesByProduct("true input");
+
+        assertEquals(1, resultIldtos.get(0).getId());
+        assertEquals(111, resultIldtos.get(0).getOrder().getId());
+        assertEquals(2, resultIldtos.get(1).getId());
+        assertEquals(222, resultIldtos.get(1).getOrder().getId());
+    }
 }

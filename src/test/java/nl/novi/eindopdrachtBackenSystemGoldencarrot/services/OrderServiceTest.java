@@ -4,6 +4,7 @@ import jakarta.mail.MessagingException;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.OrderDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.OrderItemLineDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.SetTimeAndDate;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.emailSending.EmailMessage;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.emailSending.EmailSender;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Customer;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Order;
@@ -77,9 +78,10 @@ class OrderServiceTest {
 
         Mockito.when(cRepos.findByCompany(anyString())).thenReturn(Optional.of(c));
         Mockito.when(ilService.createOrderItemLine(eq(null),
-                        any(OrderItemLineDto.class))).thenReturn(oil);
+                any(OrderItemLineDto.class))).thenReturn(oil);
         doNothing().when(emailSender).sendEmail
-                (anyString(), anyString(), anyString(), anyString(), anyString());
+                (anyString(), anyString(), any(EmailMessage.class));
+                        //anyString(), anyString(), anyString());
 
         OrderDto resultOdto = service.createOrder(odto);
 
@@ -93,7 +95,7 @@ class OrderServiceTest {
         assertEquals(oiLines.get(0).getTotalPrice(),
                 resultOdto.getProducts().get(0).getTotalPrice());
         assertNotNull(resultOdto.getOrderDate());
-       // assertNotNull(resultOdto.getId());
+        // assertNotNull(resultOdto.getId());
     }
 
     @Test
@@ -184,5 +186,5 @@ class OrderServiceTest {
         assertEquals(2, result.size());
 
     }
-    }
+}
 

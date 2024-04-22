@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class SetTimeAndDateTest {
 
     @Test
-    void shouldReturnOrderWithTimeAndDate(){
+    void shouldReturnOrderWithTimeAndDate() {
 
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
