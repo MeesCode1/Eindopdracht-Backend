@@ -1,4 +1,4 @@
-package nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.emailSending;
+package nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.emailSending;
 
 public class EmailMessage {
 
@@ -6,8 +6,6 @@ public class EmailMessage {
     private String subject;
     private String message;
 
-    public EmailMessage() {
-    }
 
     public EmailMessage(String toAddress, String subject, String message) {
         this.toAddress = toAddress;

@@ -16,29 +16,40 @@ import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundEx
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Order;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.OrderItemLine;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.OrderRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.List;
 
 @Service
 public class InvoiceService {
 
-    final String ourCompany = "The Golden Carrot";
-    final String ourAdress = "Industrieweg 338\n3455DC Utrecht";
-    final String ourPhoneNumber = "+3130 444 555 20";
-    final String ourIBAN = "NL20ABNA0005623417";
-    final String ourTaxNumber = "815247011";
+    @Value("${gc.name}")
+    private String ourCompanyName;
+    @Value("${gc.address}")
+    private String ourAddress;
+    @Value("${gc.phone}")
+    private String ourPhoneNumber;
+    @Value("${gc.iban}")
+    private String ourIBAN;
+    @Value("${gc.taxnumber}")
+    private String ourTaxNumber;
+
+    @Value("${invoice.image.toppage.name}")
+    private String imageNameTop;
+    @Value("${invoice.image.watermark.name}")
+    private String imageNameWatermark;
+
 
 
     private final OrderRepository oRepos;
+    private final ImageDataService imageService;
 
 
-    public InvoiceService(OrderRepository oRepos) throws FileNotFoundException {
+    public InvoiceService(OrderRepository oRepos, ImageDataService imageService) throws FileNotFoundException {
         this.oRepos = oRepos;
+        this.imageService = imageService;
     }
-
 
     public byte[] GenerateInvoicePdf(Long orderId) {
 
@@ -56,20 +67,19 @@ public class InvoiceService {
             float twocol = 200f;
             float[] twoColumnWidth = {twocol, twocol};
 
-            String imageSrc = "C:\\Users\\mees\\Downloads\\eindopdrachtBackenSystemGoldencarrot\\" +
-                    "eindopdrachtBackenSystemGoldencarrot\\src\\images\\goldencarrotImageTopPageInv.jpg";
-            ImageData imageDate = ImageDataFactory.create(imageSrc);
-            Image image1 = new Image(imageDate);
+            byte[] imageTopPageBytes = imageService.getImage(imageNameTop);
+            ImageData imageTopPageData = ImageDataFactory.create(imageTopPageBytes);
+            Image imageTopPage = new Image(imageTopPageData);
 
             Table overArchingTable1 = new Table(twocolwidth1);
 
-            overArchingTable1.addCell(new Cell().add(image1).setBorder(Border.NO_BORDER));
+            overArchingTable1.addCell(new Cell().add(imageTopPage).setBorder(Border.NO_BORDER));
 
             Table nestedTable = new Table(new float[]{twocol1 / 2, twocol1 / 2});
             nestedTable.addCell(getHeaderTextCell("GC Company: "));
-            nestedTable.addCell(getHeaderTextCellValue(ourCompany));
+            nestedTable.addCell(getHeaderTextCellValue(ourCompanyName));
             nestedTable.addCell(getHeaderTextCell("GC Address: "));
-            nestedTable.addCell(getHeaderTextCellValue(ourAdress));
+            nestedTable.addCell(getHeaderTextCellValue(ourAddress));
             nestedTable.addCell(getHeaderTextCell("GC Phone: "));
             nestedTable.addCell(getHeaderTextCellValue(ourPhoneNumber));
             nestedTable.addCell(getHeaderTextCell("GC IBAN: "));
@@ -170,22 +180,20 @@ public class InvoiceService {
             overArchingTable3.addCell(new Cell().add(customerInfoTable).setBorder(Border.NO_BORDER));
             overArchingTable3.addCell(new Cell().add(invoiceInfoTable).setBorder(Border.NO_BORDER));
 
-            String imageWatermarkSrc = "C:\\Users\\mees\\Downloads\\eindopdrachtBackenSystemGoldencarrot\\" +
-                    "eindopdrachtBackenSystemGoldencarrot\\src\\images\\goldencarrotImageWmInv.jpg";
-            ImageData imageWatermarkDate = ImageDataFactory.create(imageWatermarkSrc);
-            Image imageWatermark = new Image(imageWatermarkDate);
+
+            byte[] imageWaterMarkBytes = imageService.getImage(imageNameWatermark);
+            ImageData imageWaterMarkData = ImageDataFactory.create(imageWaterMarkBytes);
+            Image imageWatermark = new Image(imageWaterMarkData);
+
 
             float xLeft = 30;
             float y30Bottom = 30;
             imageWatermark.setFixedPosition(xLeft, y30Bottom);
             imageWatermark.setOpacity(0.9f);
 
-
-            String imageWatermarkSrc2 = "C:\\Users\\mees\\Downloads\\eindopdrachtBackenSystemGoldencarrot" +
-                    "\\eindopdrachtBackenSystemGoldencarrot\\src\\images\\goldencarrotImageWmInv.jpg";
-
-            ImageData imageWatermarkDate2 = ImageDataFactory.create(imageWatermarkSrc2);
-            Image imageWatermark2 = new Image(imageWatermarkDate2);
+            byte[] imageWaterMarkBytes2 = imageService.getImage(imageNameWatermark);
+            ImageData imageWaterMarkData2 = ImageDataFactory.create(imageWaterMarkBytes2);
+            Image imageWatermark2 = new Image(imageWaterMarkData2);
 
             float xRight = 565.28f - 90f;
             imageWatermark2.setFixedPosition(xRight, y30Bottom);
@@ -215,7 +223,6 @@ public class InvoiceService {
 
             document.add(overArchingTable1);
             document.add(new Paragraph("\n"));
-//       document.add(deviderBig);
             document.add(new Paragraph("\n"));
             document.add(overArchingTable3);
             document.add(new Paragraph("\n"));

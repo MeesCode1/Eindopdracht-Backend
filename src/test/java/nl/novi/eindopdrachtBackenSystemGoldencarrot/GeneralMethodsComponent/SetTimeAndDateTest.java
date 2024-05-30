@@ -1,6 +1,6 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.GeneralMethodsComponent;
 
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.SetTimeAndDate;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.SetTimeAndDate;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Order;
 import org.junit.jupiter.api.Test;
 

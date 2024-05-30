@@ -2,7 +2,7 @@ package nl.novi.eindopdrachtBackenSystemGoldencarrot.controllers;
 
 import jakarta.validation.Valid;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.ProductDto;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.BindingValidator;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.BindingValidator;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,6 +63,7 @@ public class ProductController {
         pdto = service.updateProduct(productname, pdto);
         return ResponseEntity.ok(pdto);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable Long id) {

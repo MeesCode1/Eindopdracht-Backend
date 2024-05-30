@@ -1,4 +1,4 @@
-package nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent;
+package nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;

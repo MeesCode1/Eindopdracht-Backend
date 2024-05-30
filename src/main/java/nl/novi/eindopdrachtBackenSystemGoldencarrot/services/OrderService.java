@@ -4,15 +4,16 @@ import jakarta.mail.MessagingException;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.OrderDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.OrderItemLineDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundException;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.ModelMapperConfig;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.SetTimeAndDate;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.emailSending.EmailMessage;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.emailSending.EmailSender;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.ModelMapperConfig;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.SetTimeAndDate;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.emailSending.EmailMessage;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.emailSending.EmailSender;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Customer;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Order;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.OrderItemLine;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.CustomerRepository;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.OrderRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,11 +21,20 @@ import java.util.List;
 
 @Service
 public class OrderService {
+
     private final OrderRepository repos;
     private final CustomerRepository cRepos;
     private final OrderItemLineService ilService;
-
     private final EmailSender emailSender;
+
+    @Value("${spring.mail.username}")
+    private String mailUsername;
+
+    @Value("${spring.mail.password}")
+    private String mailPassword;
+
+    @Value("${spring.mail.recipient}")
+    private String mailRecipient;
 
 
     public OrderService(OrderRepository repos, CustomerRepository cRepos, OrderItemLineService ilService, EmailSender emailSender) {
@@ -68,10 +78,10 @@ public class OrderService {
         repos.save(order);
 
 
-        emailSender.sendEmail("finance-thegoldencarrot_novi@outlook.com",
-                "Novi44code88",
+        emailSender.sendEmail(mailUsername,
+                              mailPassword,
                 new EmailMessage(
-                "finance-thegoldencarrot_novi@outlook.com",
+                mailRecipient,
                 "New Invoice",
                 "Hi best employee of finance," + "\n" +
                         "\n New invoice to download!" +

@@ -52,7 +52,7 @@ public class OrderItemLineService {
                 .orElse(null);
 
         Product p = pRepos.findByName(newIldto.productName).orElseThrow
-                (() -> new ResourceNotFoundException("product nog familiar"));
+                (() -> new ResourceNotFoundException("product not familiar"));
 
         boolean itemLineExistInOrder = ilToUpdate != null;
 

@@ -13,6 +13,7 @@ public class UserEmployee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long employeeNumber;
+
     private String username;
     private String password;
     private String firstName;
@@ -21,6 +22,7 @@ public class UserEmployee {
 
     @Transient
     private int age;
+
     private String address;
 
     private String phoneNumb;

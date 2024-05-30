@@ -2,7 +2,7 @@ package nl.novi.eindopdrachtBackenSystemGoldencarrot.services;
 
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.UserEmployeeDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundException;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.ModelMapperConfig;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.ModelMapperConfig;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Role;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.UserEmployee;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.RoleRepository;
@@ -49,9 +49,7 @@ public class UserEmployeeService {
         }
 
         newUser.setRoles(roles);
-        repos.save(newUser);
-
-        udto = ModelMapperConfig.mappingToDtoUserEmployee(newUser);
+        udto = ModelMapperConfig.mappingToDtoUserEmployee(repos.save(newUser));
 
         return udto;
 

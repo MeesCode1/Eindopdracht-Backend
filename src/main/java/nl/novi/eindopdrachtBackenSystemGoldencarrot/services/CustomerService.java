@@ -3,7 +3,7 @@ package nl.novi.eindopdrachtBackenSystemGoldencarrot.services;
 
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.CustomerDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundException;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.ModelMapperConfig;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.ModelMapperConfig;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Customer;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.CustomerRepository;
 import org.springframework.stereotype.Service;
@@ -25,9 +25,7 @@ public class CustomerService {
 
         Customer c = ModelMapperConfig.mappingToEntityCustomer(cDto);
 
-        repos.save(c);
-
-        cDto = ModelMapperConfig.mappingToDtoCustomer(c);
+        cDto = ModelMapperConfig.mappingToDtoCustomer(repos.save(c));
 
         return cDto;
 
