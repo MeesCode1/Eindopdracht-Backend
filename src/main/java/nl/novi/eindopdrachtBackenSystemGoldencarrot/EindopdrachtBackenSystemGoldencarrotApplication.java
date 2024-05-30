@@ -8,7 +8,8 @@ public class EindopdrachtBackenSystemGoldencarrotApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(EindopdrachtBackenSystemGoldencarrotApplication.class, args);
-    }
 
+
+    }
 }
 

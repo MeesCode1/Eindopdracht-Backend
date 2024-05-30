@@ -2,7 +2,7 @@ package nl.novi.eindopdrachtBackenSystemGoldencarrot.controllers;
 
 import jakarta.validation.Valid;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.UserEmployeeDto;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.BindingValidator;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.BindingValidator;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.UserEmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

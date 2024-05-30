@@ -2,7 +2,7 @@ package nl.novi.eindopdrachtBackenSystemGoldencarrot.services;
 
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.ProductDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundException;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.ModelMapperConfig;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.ModelMapperConfig;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Product;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -21,9 +21,8 @@ public class ProductService {
     public ProductDto createProduct(ProductDto pdto) {
 
         Product p = ModelMapperConfig.mappingToEntityProduct(pdto);
-        repos.save(p);
 
-        pdto = ModelMapperConfig.mappingToDtoProduct(p);
+        pdto = ModelMapperConfig.mappingToDtoProduct(repos.save(p));
 
         return pdto;
     }
@@ -84,11 +83,13 @@ public class ProductService {
         if (pdto.description != null) {
             p.setDescription(pdto.description);
         }
-        repos.save(p);
-        pdto = ModelMapperConfig.mappingToDtoProduct(p);
+
+        pdto = ModelMapperConfig.mappingToDtoProduct(repos.save(p));
 
         return pdto;
     }
+
+
 
     public String deleteProduct(Long id) {
         Product p = repos.findById(id).orElseThrow(() ->
@@ -103,8 +104,7 @@ public class ProductService {
     public void lowerInStockNewOrder(String productName, int quantity) {
 
         Product p = repos.findByName(productName).orElseThrow(() ->
-                new ResourceNotFoundException("No product familiar with name \""
-                        + productName + "\""));
+                new ResourceNotFoundException("product not found"));
 
         if (p.getInStock() < quantity) {
             throw new IllegalArgumentException("Only " + p.getInStock() + " " + p.getName() + " in stock");

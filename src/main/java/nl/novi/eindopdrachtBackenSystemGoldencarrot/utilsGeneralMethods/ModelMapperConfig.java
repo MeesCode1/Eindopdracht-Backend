@@ -1,4 +1,4 @@
-package nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent;
+package nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods;
 
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.*;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.*;

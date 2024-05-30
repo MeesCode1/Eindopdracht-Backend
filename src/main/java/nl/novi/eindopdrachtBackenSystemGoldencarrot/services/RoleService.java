@@ -18,7 +18,7 @@ public class RoleService {
 
         Role role = new Role();
         role.setRoleName(roledto.roleName);
-        repos.save(role);
+        role = repos.save(role);
 
         return role.getId();
     }

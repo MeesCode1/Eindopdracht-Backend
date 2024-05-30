@@ -1,4 +1,4 @@
-package nl.novi.eindopdrachtBackenSystemGoldencarrot.generalMethodsComponent.emailSending;
+package nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.emailSending;
 
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
