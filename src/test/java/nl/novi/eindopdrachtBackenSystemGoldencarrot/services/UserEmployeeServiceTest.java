@@ -1,11 +1,11 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.services;
 
 import jakarta.mail.MessagingException;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.UserEmployeeDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDtoOutput;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Role;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.UserEmployee;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.UserEmployeeRepository;
-import org.hibernate.mapping.Any;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -55,7 +55,7 @@ class UserEmployeeServiceTest {
 
         Mockito.when(repos.findByEmployeeNumber(any())).thenReturn(Optional.of(userEmployee));
 
-        UserEmployeeDto resultUdto = service.getUserEmployee(1L);
+        UserEmployeeDtoOutput resultUdto = service.getUserEmployee(1L);
 
         assertEquals("GuusMeeuwis", resultUdto.username);
         assertEquals("Muziekweg 38 Eindhoven", resultUdto.address);

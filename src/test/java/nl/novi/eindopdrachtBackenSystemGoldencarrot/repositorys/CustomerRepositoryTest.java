@@ -1,15 +1,10 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys;
 
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.CustomerDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Customer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.util.Assert;
 
 import java.util.List;
 

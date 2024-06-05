@@ -1,7 +1,11 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.services;
 
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.UserEmployeeDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDtoOutput;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDtoUpdate;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.IllegalArgumentException;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundException;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Customer;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.ModelMapperConfig;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Role;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.UserEmployee;
@@ -30,13 +34,19 @@ public class UserEmployeeService {
         this.pwEncoder = pwEncoder;
     }
 
-    public UserEmployeeDto createUser(UserEmployeeDto udto) {
+    public UserEmployeeDtoOutput createUser(UserEmployeeDto udto) {
 
         Optional<UserEmployee> existingUser = repos.findByUsername(udto.username);
         if (existingUser.isPresent()) {
             throw new IllegalArgumentException("Gebruiker \"" + udto.getUsername() + "\" bestaat al\n" +
                     "kies een andere gebruikersnaam");
         }
+
+            String checkCorrectUsername = udto.firstName + udto.lastName;
+            if (!udto.username.equals(checkCorrectUsername)){
+                throw new IllegalArgumentException("username requirement: username =" +
+                        "FirstnameLastname");
+            }
 
         UserEmployee newUser = ModelMapperConfig.mappingToEntityUserEmployee(udto);
         newUser.setPassword(pwEncoder.encode(udto.password));
@@ -47,45 +57,48 @@ public class UserEmployeeService {
 
             roles.add(optionalRole.get());
         }
-
         newUser.setRoles(roles);
-        udto = ModelMapperConfig.mappingToDtoUserEmployee(repos.save(newUser));
 
-        return udto;
-
+        newUser = repos.save(newUser);
+        return ModelMapperConfig.mappingToDtoUserEmployee(repos.save(newUser));
     }
 
-    public UserEmployeeDto getUserEmployee(Long employeeNumber) {
+    public UserEmployeeDtoOutput getUserEmployee(Long employeeNumber) {
         UserEmployee userEmployee = repos.findByEmployeeNumber(employeeNumber).orElseThrow(() ->
                 new ResourceNotFoundException("Employee not found"));
 
         return ModelMapperConfig.mappingToDtoUserEmployee(userEmployee);
     }
 
-    public List<UserEmployeeDto> getAllUserEmployees() {
+    public List<UserEmployeeDtoOutput> getAllUserEmployees() {
 
-        List<UserEmployeeDto> udtos = new ArrayList<>();
+        List<UserEmployeeDtoOutput> udtos = new ArrayList<>();
 
         Iterable<UserEmployee> useremployees = repos.findAll();
         for (UserEmployee user : useremployees) {
-            UserEmployeeDto udto = ModelMapperConfig.mappingToDtoUserEmployee(user);
+            UserEmployeeDtoOutput udto = ModelMapperConfig.mappingToDtoUserEmployee(user);
 
             udtos.add(udto);
         }
         return udtos;
     }
 
-    public UserEmployeeDto updateUserEmployee(Long employeeNumber,
-                                              UserEmployeeDto udto) {
+    public UserEmployeeDtoOutput updateUserEmployee(Long employeeNumber,
+                                                    UserEmployeeDtoUpdate udto) {
 
         UserEmployee userEmployee = repos.findByEmployeeNumber(employeeNumber).orElseThrow(() ->
                 new ResourceNotFoundException("UserEmployee not found"));
 
+        if (udto.firstName != null || udto.lastName != null || udto.username != null) {
+            String checkCorrectUsername = udto.firstName + udto.lastName;
+
+            if (udto.username == null || !udto.username.equals(checkCorrectUsername)){
+                throw new IllegalArgumentException("username requirement: username =" +
+                        "FirstnameLastname");
+            }
+        }
         if (udto.username != null) {
             userEmployee.setUsername(udto.username);
-        }
-        if (udto.password != null) {
-            userEmployee.setPassword(udto.password);
         }
         if (udto.firstName != null) {
             userEmployee.setFirstName(udto.firstName);
@@ -112,11 +125,17 @@ public class UserEmployeeService {
             userEmployee.setFunction(udto.function);
         }
 
+        userEmployee = repos.save(userEmployee);
+        return ModelMapperConfig.mappingToDtoUserEmployee(userEmployee);
+    }
 
-        repos.save(userEmployee);
-        udto = ModelMapperConfig.mappingToDtoUserEmployee(userEmployee);
 
-        return udto;
+    public String deleteUserEmployee(Long employeeNumber) {
+        UserEmployee user = repos.findById(employeeNumber).orElseThrow(() ->
+                new ResourceNotFoundException("Customer not found"));
+        String username = user.getUsername();
+        repos.delete(user);
+        return username;
     }
 
 }

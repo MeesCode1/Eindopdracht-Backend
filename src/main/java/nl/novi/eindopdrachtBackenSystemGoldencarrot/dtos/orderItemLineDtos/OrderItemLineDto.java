@@ -1,4 +1,4 @@
-package nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos;
+package nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderItemLineDtos;
 
 
 import jakarta.validation.constraints.NotBlank;

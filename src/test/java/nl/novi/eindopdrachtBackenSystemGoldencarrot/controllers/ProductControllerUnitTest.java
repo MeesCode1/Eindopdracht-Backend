@@ -1,9 +1,7 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.controllers;
 
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.CustomerDto;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.ProductDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.security.JwtService;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.CustomerService;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.ProductService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

@@ -1,7 +1,8 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.services;
 
 
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.CustomerDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.customerDtos.CustomerDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.customerDtos.CustomerDtoUpdate;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundException;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.ModelMapperConfig;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Customer;
@@ -53,7 +54,7 @@ public class CustomerService {
         return cDtos;
     }
 
-    public CustomerDto updateCustomer(String company, CustomerDto cdto) {
+    public CustomerDto updateCustomer(String company, CustomerDtoUpdate cdto) {
         Customer c = repos.findByCompany(company).orElseThrow(() ->
                 new ResourceNotFoundException("Customer not found"));
 
@@ -82,10 +83,9 @@ public class CustomerService {
             c.setBankAccount(cdto.bankAccount);
         }
 
-        repos.save(c);
-        cdto = ModelMapperConfig.mappingToDtoCustomer(c);
+        Customer updatedCustomer = repos.save(c);
 
-        return cdto;
+        return ModelMapperConfig.mappingToDtoCustomer(c);
     }
 
     public String deleteCustomer(Long id) {

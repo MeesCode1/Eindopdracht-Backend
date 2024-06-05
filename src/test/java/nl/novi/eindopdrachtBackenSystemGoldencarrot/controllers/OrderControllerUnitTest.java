@@ -1,9 +1,8 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.controllers;
 
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.OrderDto;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.OrderItemLineDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderDtos.OrderDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderItemLineDtos.OrderItemLineDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.security.JwtService;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.CustomerService;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.OrderService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,7 +17,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 

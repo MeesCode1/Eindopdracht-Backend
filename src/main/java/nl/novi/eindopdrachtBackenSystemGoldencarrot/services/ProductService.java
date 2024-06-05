@@ -1,6 +1,9 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.services;
 
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.ProductDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDtoDecreaseStock;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDtoIncreaseStock;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDtoUpdate;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundException;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.ModelMapperConfig;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Product;
@@ -61,7 +64,7 @@ public class ProductService {
         return pDtos;
     }
 
-    public ProductDto updateProduct(String productname, ProductDto pdto) {
+    public ProductDto updateProduct(String productname, ProductDtoUpdate pdto) {
         Product p = repos.findByName(productname).orElseThrow(() ->
                 new ResourceNotFoundException("product not found"));
 
@@ -84,9 +87,31 @@ public class ProductService {
             p.setDescription(pdto.description);
         }
 
-        pdto = ModelMapperConfig.mappingToDtoProduct(repos.save(p));
+        Product updatedProduct = repos.save(p);
 
-        return pdto;
+        return ModelMapperConfig.mappingToDtoProduct(updatedProduct);
+    }
+
+    public ProductDto increaseProductStock(String productname, ProductDtoIncreaseStock pdto) {
+        Product p = repos.findByName(productname).orElseThrow(() ->
+                new ResourceNotFoundException("Product not found"));
+
+        p.setInStock(p.getInStock() + pdto.addToStock);
+
+        Product updatedProduct = repos.save(p);
+
+        return ModelMapperConfig.mappingToDtoProduct(updatedProduct);
+    }
+
+    public ProductDto decreaseProductStock(String productname, ProductDtoDecreaseStock pdto) {
+        Product p = repos.findByName(productname).orElseThrow(() ->
+                new ResourceNotFoundException("Product not found"));
+
+        p.setInStock(p.getInStock() - pdto.reduceFromStock);
+
+        Product updatedProduct = repos.save(p);
+
+        return ModelMapperConfig.mappingToDtoProduct(updatedProduct);
     }
 
 

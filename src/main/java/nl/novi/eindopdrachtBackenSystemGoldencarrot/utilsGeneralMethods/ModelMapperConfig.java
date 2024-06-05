@@ -1,6 +1,12 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods;
 
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.*;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.customerDtos.CustomerDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderDtos.OrderDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderItemLineDtos.OrderItemLineDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDtoOutput;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDtoUpdate;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Configuration;
@@ -56,10 +62,9 @@ public class ModelMapperConfig {
 
     //userEmployee
 
-    public static UserEmployeeDto mappingToDtoUserEmployee(UserEmployee user) {
+    public static UserEmployeeDtoOutput mappingToDtoUserEmployee(UserEmployee user) {
 
-        UserEmployeeDto udto = modelMapper.map(user, UserEmployeeDto.class);
-        udto.password = "secret info";
+        UserEmployeeDtoOutput udto = modelMapper.map(user, UserEmployeeDtoOutput.class);
 
         List<String> rolenames = new ArrayList<>();
 

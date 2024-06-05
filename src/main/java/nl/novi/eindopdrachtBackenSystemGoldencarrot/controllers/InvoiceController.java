@@ -1,5 +1,6 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.controllers;
 
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.ImageDataFile;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.InvoiceService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

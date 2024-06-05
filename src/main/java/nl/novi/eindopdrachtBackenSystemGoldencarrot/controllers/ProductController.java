@@ -1,7 +1,10 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.controllers;
 
 import jakarta.validation.Valid;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.ProductDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDtoDecreaseStock;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDtoIncreaseStock;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDtoUpdate;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.BindingValidator;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.ProductService;
 import org.springframework.http.HttpStatus;
@@ -57,13 +60,38 @@ public class ProductController {
     }
 
     @PutMapping("/{productname}")
-    public ResponseEntity<ProductDto> updateProduct(@PathVariable String productname,
-                                                    @RequestBody ProductDto pdto) {
+    public ResponseEntity<Object> updateProduct(@PathVariable String productname,
+                                                @RequestBody ProductDtoUpdate pdto) {
 
-        pdto = service.updateProduct(productname, pdto);
-        return ResponseEntity.ok(pdto);
+        ProductDto updatedProductDto = service.updateProduct(productname, pdto);
+        return ResponseEntity.ok(updatedProductDto);
     }
 
+    @PutMapping("/increasestock/{productname}")
+    public ResponseEntity<Object> increaseProductStock(@PathVariable String productname,
+                                                       @Valid @RequestBody ProductDtoIncreaseStock pdto,
+                                                           BindingResult br) {
+
+        String fieldErrors = BindingValidator.validateInput(br);
+        if (fieldErrors != null) {
+            return new ResponseEntity<>(fieldErrors, HttpStatus.BAD_REQUEST);
+        }
+        ProductDto updatedProductDto = service.increaseProductStock(productname, pdto);
+        return ResponseEntity.ok(updatedProductDto);
+    }
+
+    @PutMapping("/decreasestock/{productname}")
+    public ResponseEntity<Object> decreaseProductStock(@PathVariable String productname,
+                                                       @Valid @RequestBody ProductDtoDecreaseStock pdto,
+                                                       BindingResult br) {
+
+        String fieldErrors = BindingValidator.validateInput(br);
+        if (fieldErrors != null) {
+            return new ResponseEntity<>(fieldErrors, HttpStatus.BAD_REQUEST);
+        }
+        ProductDto updatedProductDto = service.decreaseProductStock(productname, pdto);
+        return ResponseEntity.ok(updatedProductDto);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable Long id) {

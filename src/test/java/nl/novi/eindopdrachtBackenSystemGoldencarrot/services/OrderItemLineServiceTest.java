@@ -1,13 +1,8 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.services;
 
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.CustomerDto;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.OrderItemLineDto;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Customer;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Order;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.OrderItemLine;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.CustomerRepository;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.OrderItemLineRepository;
-import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;

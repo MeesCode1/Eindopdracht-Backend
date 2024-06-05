@@ -1,7 +1,9 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.controllers;
 
 import jakarta.validation.Valid;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.UserEmployeeDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDtoOutput;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDtoUpdate;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.BindingValidator;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.UserEmployeeService;
 import org.springframework.http.HttpStatus;
@@ -32,34 +34,41 @@ public class UserEmployeeController {
         if (fieldErrors != null) {
             return new ResponseEntity<>(fieldErrors, HttpStatus.BAD_REQUEST);
         }
-        userdto = service.createUser(userdto);
-        userdto.password = "secret info";
+
+        UserEmployeeDtoOutput udtoToReturn = service.createUser(userdto);
 
         URI uri = URI.create(ServletUriComponentsBuilder.
-                fromCurrentRequest().path("/" + userdto.employeeNumber).toUriString());
+                fromCurrentRequest().path("/" + udtoToReturn.employeeNumber).toUriString());
 
-        return ResponseEntity.created(uri).body(userdto);
+        return ResponseEntity.created(uri).body(udtoToReturn);
     }
 
     @GetMapping
-    public List<UserEmployeeDto> getUsers() {
+    public List<UserEmployeeDtoOutput> getUsers() {
         return service.getAllUserEmployees();
     }
 
     @GetMapping("/{employeeNumber}")
-    public ResponseEntity<UserEmployeeDto> getCustomerByUsername(@PathVariable Long employeeNumber) {
+    public ResponseEntity<UserEmployeeDtoOutput> getCustomerByUsername(@PathVariable Long employeeNumber) {
 
-        UserEmployeeDto udto = service.getUserEmployee(employeeNumber);
+        UserEmployeeDtoOutput udto = service.getUserEmployee(employeeNumber);
 
         return ResponseEntity.ok(udto);
     }
 
     @PutMapping("/{employeeNumber}")
-    public ResponseEntity<UserEmployeeDto> updateUserEmployee(@PathVariable Long employeeNumber,
-                                                              @RequestBody UserEmployeeDto udto) {
+    public ResponseEntity<UserEmployeeDtoOutput> updateUserEmployee(@PathVariable Long employeeNumber,
+                                                                    @Valid @RequestBody UserEmployeeDtoUpdate udto,
+                                                                    BindingResult br) {
 
-        udto = service.updateUserEmployee(employeeNumber, udto);
-        return ResponseEntity.ok(udto);
+        UserEmployeeDtoOutput updatedUdto = service.updateUserEmployee(employeeNumber, udto);
+        return ResponseEntity.ok(updatedUdto);
+    }
+
+    @DeleteMapping("/{employeeNumber}")
+    public ResponseEntity<String> deleteCustomer(@PathVariable Long employeeNumber) {
+        String deletedUser = service.deleteUserEmployee(employeeNumber);
+        return ResponseEntity.ok("UserEmployee: \"" + deletedUser + "\" deleted from database");
     }
 }
 

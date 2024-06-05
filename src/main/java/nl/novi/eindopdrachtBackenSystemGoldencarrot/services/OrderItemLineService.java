@@ -1,6 +1,6 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.services;
 
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.OrderItemLineDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderItemLineDtos.OrderItemLineDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundException;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.OrderItemLine;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Product;
