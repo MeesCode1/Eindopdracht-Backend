@@ -1,8 +1,8 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.services;
 
 import jakarta.mail.MessagingException;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.OrderDto;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.OrderItemLineDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderDtos.OrderDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderItemLineDtos.OrderItemLineDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.emailSending.EmailMessage;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.emailSending.EmailSender;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Customer;
@@ -60,12 +60,17 @@ class OrderServiceTest {
         Product p = new Product();
         p.setName("Salmon side");
         p.setPriceInEur(32.14);
+
         OrderItemLine oil = new OrderItemLine();
         oil.setProduct(p);
         oil.setQuantity(3);
         oil.setTotalPrice(96.42);
         List<OrderItemLine> oiLines = new ArrayList<>();
         oiLines.add(oil);
+
+        Order order = new Order();
+        order.setCustomer(c);
+        order.setProducts(oiLines);
 
         List<OrderItemLineDto> oilDtos = new ArrayList<>();
         OrderItemLineDto oildto = new OrderItemLineDto();
@@ -75,14 +80,14 @@ class OrderServiceTest {
         odto.setCustomerCompany("Jamie's Deli");
         odto.setProducts(oilDtos);
 
+
+        Mockito.when(repos.save(any(Order.class))).thenReturn(order);
         Mockito.when(cRepos.findByCompany(anyString())).thenReturn(Optional.of(c));
         Mockito.when(ilService.createOrderItemLine(eq(null),
                 any(OrderItemLineDto.class))).thenReturn(oil);
-        doNothing().when(emailSender).sendEmail
-                (anyString(), anyString(), any(EmailMessage.class));
-                        //anyString(), anyString(), anyString());
-
+//        doNothing().when(emailSender.sendEmail(any(),any(),any(new EmailMessage.class)));
         OrderDto resultOdto = service.createOrder(odto);
+
 
         assertEquals(c.getCompany(), resultOdto.customerCompany);
         assertEquals(c.getFirstName(), resultOdto.customerFirstName);
@@ -93,9 +98,9 @@ class OrderServiceTest {
                 resultOdto.getProducts().get(0).getQuantity());
         assertEquals(oiLines.get(0).getTotalPrice(),
                 resultOdto.getProducts().get(0).getTotalPrice());
-        assertNotNull(resultOdto.getOrderDate());
-        // assertNotNull(resultOdto.getId());
-    }
+        assertNotNull(resultOdto.getOrderDate())
+
+}
 
     @Test
     void shouldReturnOrdersByProduct() {

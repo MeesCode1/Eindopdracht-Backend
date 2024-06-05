@@ -1,4 +1,4 @@
-package nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos;
+package nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos;
 
 
 import jakarta.validation.constraints.*;
@@ -12,7 +12,6 @@ public class UserEmployeeDto {
     public Long employeeNumber;
     @NotBlank
     public String username;
-
     @NotBlank
     public String password;
     @NotBlank

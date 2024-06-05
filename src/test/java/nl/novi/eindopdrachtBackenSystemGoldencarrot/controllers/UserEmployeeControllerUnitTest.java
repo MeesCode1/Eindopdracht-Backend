@@ -1,10 +1,8 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.controllers;
 
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.CustomerDto;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.UserEmployeeDto;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Role;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDtoOutput;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.security.JwtService;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.CustomerService;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.UserEmployeeService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -39,16 +37,15 @@ class UserEmployeeControllerUnitTest {
 
     @Test
     @WithMockUser(username = "testUser", roles = "JOKERCEO")
-    void shouldRetrieveCorrectCustomer() throws Exception {
+    void shouldRetrieveCorrectUserEmployee() throws Exception {
 
         String role1 = "CEO";
         List<String> roles = new ArrayList<>();
         roles.add(role1);
 
-        UserEmployeeDto udto = new UserEmployeeDto();
+        UserEmployeeDtoOutput udto = new UserEmployeeDtoOutput();
         udto.setEmployeeNumber(1L);
         udto.setUsername("GuusMeeuwis");
-        udto.setPassword("topsecret");
         udto.setFirstName("Guus");
         udto.setLastName("Meeuwis");
         udto.setDob(LocalDate.of(1972, 02, 23));

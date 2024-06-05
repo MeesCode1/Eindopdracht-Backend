@@ -1,4 +1,4 @@
-package nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos;
+package nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.customerDtos;
 
 
 import jakarta.validation.constraints.*;

@@ -1,9 +1,11 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.controllers;
 
 import jakarta.validation.Valid;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.CustomerDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.customerDtos.CustomerDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.customerDtos.CustomerDtoUpdate;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.BindingValidator;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.CustomerService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -51,10 +53,15 @@ public class CustomerController {
     }
 
     @PutMapping("/{company}")
-    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable String company,
-                                                      @RequestBody CustomerDto cdto) {
+    public ResponseEntity<Object> updateCustomer(@PathVariable String company,
+                                                 @Valid @RequestBody CustomerDtoUpdate cdto,
+                                                 BindingResult br) {
 
-        cdto = service.updateCustomer(company, cdto);
+        String fieldErrors = BindingValidator.validateInput(br);
+        if (fieldErrors != null) {
+            return new ResponseEntity<>(fieldErrors, HttpStatus.BAD_REQUEST);
+        }
+        CustomerDto updatedCustomerDto = service.updateCustomer(company, cdto);
         return ResponseEntity.ok(cdto);
     }
 

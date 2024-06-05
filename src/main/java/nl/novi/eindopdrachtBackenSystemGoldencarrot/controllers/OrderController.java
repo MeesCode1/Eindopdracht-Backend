@@ -2,7 +2,10 @@ package nl.novi.eindopdrachtBackenSystemGoldencarrot.controllers;
 
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.OrderDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderDtos.OrderDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderDtos.OrderDtoAddProduct;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderDtos.OrderDtoRemoveProduct;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderDtos.OrderDtoUpdate;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.BindingValidator;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.OrderService;
 import org.springframework.http.HttpStatus;
@@ -68,8 +71,9 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateOrder(@PathVariable Long id, @RequestBody
-    OrderDto newOdto, BindingResult br) {
+    public ResponseEntity<Object> updateOrder(@PathVariable Long id,
+                                              @Valid @RequestBody OrderDtoUpdate newOdto,
+                                              BindingResult br) {
 
         String fieldErrors = BindingValidator.validateInput(br);
         if (fieldErrors != null) {
@@ -80,9 +84,38 @@ public class OrderController {
         return ResponseEntity.ok(odto);
     }
 
+    @PutMapping("/add_item/{id}")
+    public ResponseEntity<Object> addItemToOrder(@PathVariable Long id,
+                                                 @Valid @RequestBody OrderDtoAddProduct newOdto,
+                                                 BindingResult br) {
+
+        String fieldErrors = BindingValidator.validateInput(br);
+        if (fieldErrors != null) {
+            return new ResponseEntity<>(fieldErrors, HttpStatus.BAD_REQUEST);
+        }
+
+        OrderDto odto = service.addOrderItemLineToOrder(id, newOdto);
+        return ResponseEntity.ok(odto);
+    }
+
+    @PutMapping("/remove_item/{id}")
+    public ResponseEntity<Object> removeItemFromOrder(@PathVariable Long id,
+                                                      @Valid @RequestBody OrderDtoRemoveProduct newOdto,
+                                                      BindingResult br) {
+
+        String fieldErrors = BindingValidator.validateInput(br);
+        if (fieldErrors != null) {
+            return new ResponseEntity<>(fieldErrors, HttpStatus.BAD_REQUEST);
+        }
+
+        OrderDto odto = service.deleteOrderItemLineFromOrder(id, newOdto);
+        return ResponseEntity.ok(odto);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
         Long deletedOrder = service.deleteOrder(id);
         return ResponseEntity.ok("Order with id: \"" + deletedOrder + "\"deleted from database");
     }
+
 }

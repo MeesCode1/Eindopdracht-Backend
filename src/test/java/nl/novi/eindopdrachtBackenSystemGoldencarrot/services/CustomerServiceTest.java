@@ -1,6 +1,6 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.services;
 
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.CustomerDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.customerDtos.CustomerDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundException;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Customer;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.CustomerRepository;

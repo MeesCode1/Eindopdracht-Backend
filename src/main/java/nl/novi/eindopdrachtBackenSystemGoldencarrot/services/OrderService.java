@@ -1,20 +1,26 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.services;
 
 import jakarta.mail.MessagingException;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.OrderDto;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.OrderItemLineDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderDtos.OrderDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderDtos.OrderDtoAddProduct;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderDtos.OrderDtoRemoveProduct;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderDtos.OrderDtoUpdate;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderItemLineDtos.OrderItemLineDto;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ConflictException;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundException;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.ModelMapperConfig;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.SetTimeAndDate;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.emailSending.EmailMessage;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.emailSending.EmailSender;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Customer;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Order;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.OrderItemLine;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.CustomerRepository;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.OrderItemLineRepository;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.OrderRepository;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.ModelMapperConfig;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.SetTimeAndDate;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.emailSending.EmailMessage;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.emailSending.EmailSender;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,23 +31,39 @@ public class OrderService {
     private final OrderRepository repos;
     private final CustomerRepository cRepos;
     private final OrderItemLineService ilService;
+    private final OrderItemLineRepository ilRepos;
     private final EmailSender emailSender;
 
-    @Value("${spring.mail.username}")
-    private String mailUsername;
+//    @Value("${spring.mail.username}")
+//    private String mailUsername;
+//
+//    @Value("${spring.mail.password}")
+//    private String mailPassword;
+//
+//    @Value("${spring.mail.recipient}")
+//    private String mailRecipient;
 
-    @Value("${spring.mail.password}")
-    private String mailPassword;
+    private String mailUsername = "finance-thegoldencarrot_novi@outlook.com";
 
-    @Value("${spring.mail.recipient}")
-    private String mailRecipient;
+    private String mailPassword = "Novi44code88";
 
+    private String mailRecipient = "finance-thegoldencarrot_novi@outlook.com";
 
-    public OrderService(OrderRepository repos, CustomerRepository cRepos, OrderItemLineService ilService, EmailSender emailSender) {
+//        @Value("${mail.username}")
+//    private String mailUsername;
+//
+//    @Value("${mail.password}")
+//    private String mailPassword;
+//
+//    @Value("${mail.recipient}")
+//    private String mailRecipient;
+
+    public OrderService(OrderRepository repos, CustomerRepository cRepos, OrderItemLineService ilService, OrderItemLineRepository ilRepos, EmailSender emailSender) {
 
         this.repos = repos;
         this.cRepos = cRepos;
         this.ilService = ilService;
+        this.ilRepos = ilRepos;
         this.emailSender = emailSender;
     }
 
@@ -50,8 +72,7 @@ public class OrderService {
 
         Order order = new Order();
         order = SetTimeAndDate.SetOrderDateAndTime(order);
-        repos.save(order);
-
+        order = repos.save(order);
 
         Long orderIdForIlines = order.getId();
 
@@ -75,12 +96,15 @@ public class OrderService {
             totalPriceOrder += il.getTotalPrice();
         }
         order.setTotalPriceInEur(totalPriceOrder);
-        repos.save(order);
+        order = repos.save(order);
 
+        String invoicenumb = order.getId().toString();
+        String at = order.getOrderDate().toString();
+        String time = order.getOrderTime().toString();
 
         emailSender.sendEmail(mailUsername,
-                              mailPassword,
-                new EmailMessage(
+                mailPassword,
+        new EmailMessage(
                 mailRecipient,
                 "New Invoice",
                 "Hi best employee of finance," + "\n" +
@@ -88,6 +112,7 @@ public class OrderService {
                         "\n InvoiceNumb: " + order.getId() +
                         "\n At: " + order.getOrderDate() +
                         "\n " + order.getOrderTime()));
+
 
         return ModelMapperConfig.mappingToDtoOrder(order);
     }
@@ -160,14 +185,46 @@ public class OrderService {
         return odtos;
     }
 
-    public OrderDto updateOrder(Long id, OrderDto newOdto) {
+    public OrderDto updateOrder(Long orderId, OrderDtoUpdate newOdto) {
 
         for (OrderItemLineDto ildto : newOdto.products) {
-            ilService.updateOrderItemline(id, ildto);
+            ilService.updateOrderItemline(orderId, ildto);
         }
 
-        Order order = repos.findById(id).orElseThrow(() -> new ResourceNotFoundException
+        Order order = repos.findById(orderId).orElseThrow
+                (() -> new ResourceNotFoundException("Order not found"));
+
+        List<OrderItemLine> orderItemLines = order.getProducts();
+
+        double totalPriceOrder = 0;
+        for (OrderItemLine il : orderItemLines) {
+            totalPriceOrder += il.getTotalPrice();
+        }
+
+        order.setTotalPriceInEur(totalPriceOrder);
+        order = repos.save(order);
+
+        return ModelMapperConfig.mappingToDtoOrder(order);
+    }
+
+
+    public OrderDto addOrderItemLineToOrder(Long orderId, OrderDtoAddProduct newOdto) {
+
+        Order order= repos.findById(orderId).orElseThrow(() -> new ResourceNotFoundException
                 ("order not found"));
+        List<OrderItemLine> orderItemLinesCheck = order.getProducts();
+
+        for (OrderItemLine ilCheck : orderItemLinesCheck) {
+            if (ilCheck.getProduct().getName().equals(newOdto.products.get(0).productName)) {
+                throw new ConflictException
+                        ("Dit product bevindt zich al in de order, pas het gewenste aantal aan via PUT order");
+            }
+        }
+
+        OrderItemLineDto ilDto = newOdto.products.get(0);
+        ilService.createOrderItemLine(orderId, ilDto);
+
+        order = repos.save(order);
         List<OrderItemLine> orderItemLines = order.getProducts();
 
         double totalPriceOrder = 0;
@@ -177,6 +234,29 @@ public class OrderService {
 
         order.setTotalPriceInEur(totalPriceOrder);
         repos.save(order);
+
+        return ModelMapperConfig.mappingToDtoOrder(order);
+    }
+
+    public OrderDto deleteOrderItemLineFromOrder(Long orderId, OrderDtoRemoveProduct newOdto) {
+
+        OrderItemLine ilToDelete = ilRepos.findByOrder_IdAndProduct_Name(orderId, newOdto.products.get(0)
+                .getProductName()).orElseThrow(() -> new ResourceNotFoundException
+                ("Order met id \"" + orderId + "\" bevat geen bestellijn met ingevoerde product"));
+
+        ilService.deleteOrderItemLine(ilToDelete.getProduct().getName(), orderId);
+
+        Order order = repos.findById(orderId).orElseThrow(() -> new ResourceNotFoundException
+                ("order not found"));
+        List<OrderItemLine> orderItemLines = order.getProducts();
+
+        double totalPriceOrder = 0;
+        for (OrderItemLine il : orderItemLines) {
+            totalPriceOrder += il.getTotalPrice();
+        }
+
+        order.setTotalPriceInEur(totalPriceOrder);
+        order = repos.save(order);
 
         return ModelMapperConfig.mappingToDtoOrder(order);
     }
