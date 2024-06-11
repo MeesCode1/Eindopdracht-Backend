@@ -13,17 +13,22 @@ import com.itextpdf.layout.border.SolidBorder;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.property.TextAlignment;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundException;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Invoice;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Order;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.OrderItemLine;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.InvoiceRepository;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.OrderRepository;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.ImageUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class InvoiceService {
 
+    private final ImageUtil imageUtil;
     @Value("${gc.name}")
     private String ourCompanyName;
     @Value("${gc.address}")
@@ -42,18 +47,22 @@ public class InvoiceService {
 
 
 
+    private final InvoiceRepository repos;
     private final OrderRepository oRepos;
     private final ImageDataService imageService;
 
 
-    public InvoiceService(OrderRepository oRepos, ImageDataService imageService) throws FileNotFoundException {
+    public InvoiceService(InvoiceRepository repos, OrderRepository oRepos, ImageDataService imageService, ImageUtil imageUtil) {
+        this.repos = repos;
         this.oRepos = oRepos;
         this.imageService = imageService;
+        this.imageUtil = imageUtil;
     }
 
-    public byte[] GenerateInvoicePdf(Long orderId) {
 
-        Order order = oRepos.findById(orderId).orElseThrow(() -> new ResourceNotFoundException
+          public Invoice generateInvoicePdf(Long orderId) {
+
+    Order order = oRepos.findById(orderId).orElseThrow(() -> new ResourceNotFoundException
                 ("order not found"));
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             PdfWriter writer = new PdfWriter(outputStream);
@@ -238,13 +247,56 @@ public class InvoiceService {
             pdfDocument.close();
             document.close();
 
-            return outputStream.toByteArray();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new byte[0];
-        }
+
+            byte[] invoiceData = outputStream.toByteArray();
+            Invoice invoice = new Invoice();
+            invoice.setOrder(order);
+            invoice.setCustomer(order.getCustomer());
+            invoice.setCustomerCompany(order.getCustomer().getCompany());
+            invoice.setOrderNumber(order.getId().intValue());
+            invoice.setInvoiceData(ImageUtil.compressImage(invoiceData));
+            repos.save(invoice);
+
+            return invoice;
+
+        }catch (IOException e) {
+                throw new RuntimeException(e);
+            }
     }
 
+
+
+    public byte[] getInvoiceFromOrder(Long id){
+        Invoice invoice = repos.findByOrderNumber(id).orElseThrow(() -> new ResourceNotFoundException
+                ("order not found"));
+        return ImageUtil.decompressImage(invoice.getInvoiceData());
+    }
+
+    public List<byte[]> getAllInvoices() {
+        Iterable<Invoice> invoices = repos.findAll();
+        List<byte[]> invoicesData = new ArrayList<>();
+
+        for (Invoice invoice : invoices) {
+            byte[] invoiceData = ImageUtil.decompressImage(invoice.getInvoiceData());
+            invoicesData.add(invoiceData);
+        }
+        return invoicesData;
+    }
+
+    public List<byte[]> getInvoicesByCustomer(String customerCompany) {
+        Iterable<Invoice> invoices = repos.findByCustomer_Company(customerCompany);
+
+        List<byte[]> invoicesData = new ArrayList<>();
+
+        for (Invoice invoice : invoices) {
+            byte[] invoiceData = ImageUtil.decompressImage(invoice.getInvoiceData());
+            invoicesData.add(invoiceData);
+        }
+        return invoicesData;
+    }
+
+
+    //side-methods
     static Text getTextBold(String string) {
         Text text = new Text(string);
         return text.setBold();
