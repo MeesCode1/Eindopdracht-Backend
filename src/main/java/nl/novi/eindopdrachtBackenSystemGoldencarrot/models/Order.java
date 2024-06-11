@@ -25,6 +25,9 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItemLine> products = new ArrayList<>();
 
+    @OneToOne(mappedBy = "order")
+    private Invoice invoice;
+
     public Long getId() {
         return id;
     }
@@ -72,6 +75,14 @@ public class Order {
 
     public void setProducts(List<OrderItemLine> products) {
         this.products = products;
+    }
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
     }
 }
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 public class ImageDataService {
@@ -19,7 +20,14 @@ public class ImageDataService {
         this.imageRepos = imageRepos;
     }
 
+    @Transactional
     public String uploadImage(MultipartFile multipartFile) throws IOException {
+
+        String newImageName = multipartFile.getOriginalFilename();
+        Optional<ImageDataFile> existingDataFile = imageRepos.findByName(newImageName);
+        if(existingDataFile.isPresent()){
+            throw new IllegalArgumentException("afbeelding met deze naam bestaat al in database");
+        }
         ImageDataFile imageData = new ImageDataFile();
         imageData.setName(multipartFile.getOriginalFilename());
         imageData.setType(multipartFile.getContentType());

@@ -53,7 +53,8 @@ public class SecurityConfig {
                 .httpBasic().disable()
                 .authorizeHttpRequests()
 
-                .requestMatchers(HttpMethod.GET, "/invoices/download/{id}").permitAll()
+                //.requestMatchers(HttpMethod.GET, "/invoices/download/{id}").permitAll()
+                .requestMatchers(HttpMethod.GET, "/invoices/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth").permitAll()
                 .requestMatchers(HttpMethod.POST, "/image/{name}").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users_employees").hasAnyAuthority("CEO", "JOKER-CEO")

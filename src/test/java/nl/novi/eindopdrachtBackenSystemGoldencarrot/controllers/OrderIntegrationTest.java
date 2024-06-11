@@ -1,6 +1,9 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.controllers;
 
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.logging.Logger;
+import org.junit.platform.commons.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +19,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 @AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
 class OrderIntegrationTest {
+
+    private static final Logger logger = LoggerFactory.getLogger(OrderIntegrationTest.class);
 
     @Autowired
     MockMvc mockMvc;

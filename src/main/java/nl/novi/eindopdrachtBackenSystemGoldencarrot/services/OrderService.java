@@ -9,15 +9,18 @@ import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderItemLineDtos.Order
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ConflictException;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundException;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Customer;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Invoice;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Order;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.OrderItemLine;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.CustomerRepository;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.InvoiceRepository;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.OrderItemLineRepository;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.OrderRepository;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.ModelMapperConfig;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.SetTimeAndDate;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.emailSending.EmailMessage;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.emailSending.EmailSender;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -33,38 +36,31 @@ public class OrderService {
     private final OrderItemLineService ilService;
     private final OrderItemLineRepository ilRepos;
     private final EmailSender emailSender;
+    private final InvoiceRepository invoiceRepos;
+    private final InvoiceService invoiceService;
 
-//    @Value("${spring.mail.username}")
-//    private String mailUsername;
-//
-//    @Value("${spring.mail.password}")
-//    private String mailPassword;
-//
-//    @Value("${spring.mail.recipient}")
-//    private String mailRecipient;
+    @Value("${mail.username}")
+    private String mailUsername;
 
-    private String mailUsername = "finance-thegoldencarrot_novi@outlook.com";
+    @Value("${mail.password}")
+    private String mailPassword;
 
-    private String mailPassword = "Novi44code88";
+    @Value("${mail.recipient}")
+    private String mailRecipient;
 
-    private String mailRecipient = "finance-thegoldencarrot_novi@outlook.com";
 
-//        @Value("${mail.username}")
-//    private String mailUsername;
-//
-//    @Value("${mail.password}")
-//    private String mailPassword;
-//
-//    @Value("${mail.recipient}")
-//    private String mailRecipient;
-
-    public OrderService(OrderRepository repos, CustomerRepository cRepos, OrderItemLineService ilService, OrderItemLineRepository ilRepos, EmailSender emailSender) {
+    @Autowired
+    public OrderService(OrderRepository repos, CustomerRepository cRepos, OrderItemLineService ilService,
+                        OrderItemLineRepository ilRepos, EmailSender emailSender, InvoiceRepository invoiceRepos,
+                        InvoiceService invoiceService) {
 
         this.repos = repos;
         this.cRepos = cRepos;
         this.ilService = ilService;
         this.ilRepos = ilRepos;
         this.emailSender = emailSender;
+        this.invoiceRepos = invoiceRepos;
+        this.invoiceService = invoiceService;
     }
 
 
@@ -98,17 +94,20 @@ public class OrderService {
         order.setTotalPriceInEur(totalPriceOrder);
         order = repos.save(order);
 
-        String invoicenumb = order.getId().toString();
-        String at = order.getOrderDate().toString();
-        String time = order.getOrderTime().toString();
+     Invoice invoice = invoiceService.generateInvoicePdf(order.getId());
+
+     if (invoice.getInvoiceData() == null){
+         throw new ConflictException("invoice is empty, problems generating invoice");
+     }
+              order.setInvoice(invoice);
 
         emailSender.sendEmail(mailUsername,
-                mailPassword,
+             mailPassword,
         new EmailMessage(
                 mailRecipient,
                 "New Invoice",
                 "Hi best employee of finance," + "\n" +
-                        "\n New invoice to download!" +
+                        "\n New invoice to send to customer!" +
                         "\n InvoiceNumb: " + order.getId() +
                         "\n At: " + order.getOrderDate() +
                         "\n " + order.getOrderTime()));
