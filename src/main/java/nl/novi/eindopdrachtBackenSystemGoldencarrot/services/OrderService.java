@@ -94,23 +94,23 @@ public class OrderService {
         order.setTotalPriceInEur(totalPriceOrder);
         order = repos.save(order);
 
-     Invoice invoice = invoiceService.generateInvoicePdf(order.getId());
+        Invoice invoice = invoiceService.generateInvoicePdf(order.getId());
 
-     if (invoice.getInvoiceData() == null){
-         throw new ConflictException("invoice is empty, problems generating invoice");
-     }
-              order.setInvoice(invoice);
+        if (invoice.getInvoiceData() == null) {
+            throw new ConflictException("invoice is empty, problems generating invoice");
+        }
+        order.setInvoice(invoice);
 
         emailSender.sendEmail(mailUsername,
-             mailPassword,
-        new EmailMessage(
-                mailRecipient,
-                "New Invoice",
-                "Hi best employee of finance," + "\n" +
-                        "\n New invoice to send to customer!" +
-                        "\n InvoiceNumb: " + order.getId() +
-                        "\n At: " + order.getOrderDate() +
-                        "\n " + order.getOrderTime()));
+                mailPassword,
+                new EmailMessage(
+                        mailRecipient,
+                        "New Invoice",
+                        "Hi best employee of finance," + "\n" +
+                                "\n New invoice to send to customer!" +
+                                "\n InvoiceNumb: " + order.getId() +
+                                "\n At: " + order.getOrderDate() +
+                                "\n " + order.getOrderTime()));
 
 
         return ModelMapperConfig.mappingToDtoOrder(order);
@@ -209,7 +209,7 @@ public class OrderService {
 
     public OrderDto addOrderItemLineToOrder(Long orderId, OrderDtoAddProduct newOdto) {
 
-        Order order= repos.findById(orderId).orElseThrow(() -> new ResourceNotFoundException
+        Order order = repos.findById(orderId).orElseThrow(() -> new ResourceNotFoundException
                 ("order not found"));
         List<OrderItemLine> orderItemLinesCheck = order.getProducts();
 

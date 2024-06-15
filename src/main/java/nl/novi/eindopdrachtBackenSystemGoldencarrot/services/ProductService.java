@@ -5,10 +5,11 @@ import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDtoD
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDtoIncreaseStock;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDtoUpdate;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundException;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.ModelMapperConfig;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Product;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.ProductRepository;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.ModelMapperConfig;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,7 +114,6 @@ public class ProductService {
 
         return ModelMapperConfig.mappingToDtoProduct(updatedProduct);
     }
-
 
 
     public String deleteProduct(Long id) {

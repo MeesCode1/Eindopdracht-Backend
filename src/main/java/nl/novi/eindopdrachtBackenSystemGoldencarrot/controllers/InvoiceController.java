@@ -1,8 +1,6 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.controllers;
 
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.ImageDataFile;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.InvoiceService;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -68,7 +65,7 @@ public class InvoiceController {
         return new ResponseEntity<>(zipBytes, headers, HttpStatus.OK);
     }
 
-    @GetMapping(value="/customer/{customerCompany}", produces = "application/zip")
+    @GetMapping(value = "/customer/{customerCompany}", produces = "application/zip")
     public ResponseEntity<byte[]> downloadInvoicesFromCustomer(@PathVariable String customerCompany)
             throws IOException {
 

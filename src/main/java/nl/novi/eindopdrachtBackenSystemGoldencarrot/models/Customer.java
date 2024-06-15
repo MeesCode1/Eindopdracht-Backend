@@ -1,6 +1,7 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.models;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,6 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
-
 
 
     public String getAddress() {

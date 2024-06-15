@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "order_item_lines")
-//@Table(name = "orderItemLines")
 public class OrderItemLine {
 
     @Id

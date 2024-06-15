@@ -20,7 +20,7 @@ public class ImageUtil {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
 
-        byte[] tmp = new byte[4 * 1024];
+        byte[] tmp = new byte[8 * 1024];
 
         try {
             while (!deflater.finished()) {
@@ -41,7 +41,7 @@ public class ImageUtil {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
 
-        byte[] tmp = new byte[4 * 1024];
+        byte[] tmp = new byte[8 * 1024];
         try {
             while (!inflater.finished()) {
                 int count = inflater.inflate(tmp);

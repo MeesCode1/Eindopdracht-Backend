@@ -5,8 +5,8 @@ import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDtoDecreaseStock;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDtoIncreaseStock;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDtoUpdate;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.BindingValidator;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.ProductService;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.BindingValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -70,7 +70,7 @@ public class ProductController {
     @PutMapping("/increasestock/{productname}")
     public ResponseEntity<Object> increaseProductStock(@PathVariable String productname,
                                                        @Valid @RequestBody ProductDtoIncreaseStock pdto,
-                                                           BindingResult br) {
+                                                       BindingResult br) {
 
         String fieldErrors = BindingValidator.validateInput(br);
         if (fieldErrors != null) {

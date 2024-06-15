@@ -6,7 +6,6 @@ import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderItemLineDtos.Order
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDtoOutput;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDtoUpdate;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Configuration;

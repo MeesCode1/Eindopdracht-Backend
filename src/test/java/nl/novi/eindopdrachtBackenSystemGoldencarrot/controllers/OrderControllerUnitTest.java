@@ -20,7 +20,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
 @WebMvcTest(OrderController.class)
@@ -83,6 +82,5 @@ public class OrderControllerUnitTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.products[0].productName", is("Salmon side")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.products[1].productName", is("Vine tomatoes")));
     }
-
 
 }
