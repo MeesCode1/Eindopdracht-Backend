@@ -14,9 +14,10 @@ public class Invoice {
 
     private String customerCompany;
 
+    @Lob
     byte[] invoiceData;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Customer customer;
 
     @OneToOne

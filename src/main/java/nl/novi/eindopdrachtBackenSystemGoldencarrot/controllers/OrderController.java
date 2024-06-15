@@ -6,13 +6,14 @@ import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderDtos.OrderDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderDtos.OrderDtoAddProduct;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderDtos.OrderDtoRemoveProduct;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.orderDtos.OrderDtoUpdate;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.BindingValidator;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.OrderService;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.BindingValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;

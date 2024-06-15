@@ -1,7 +1,6 @@
-package nl.novi.eindopdrachtBackenSystemGoldencarrot.GeneralMethodsComponent;
+package nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods;
 
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.productDtos.ProductDto;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.ModelMapperConfig;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Product;
 import org.junit.jupiter.api.Test;
 

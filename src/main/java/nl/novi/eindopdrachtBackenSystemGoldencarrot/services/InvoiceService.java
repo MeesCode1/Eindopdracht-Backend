@@ -18,17 +18,19 @@ import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Order;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.OrderItemLine;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.InvoiceRepository;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.OrderRepository;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.ImageUtil;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.InvoiceUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import java.io.*;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class InvoiceService {
 
-    private final ImageUtil imageUtil;
+
     @Value("${gc.name}")
     private String ourCompanyName;
     @Value("${gc.address}")
@@ -46,23 +48,23 @@ public class InvoiceService {
     private String imageNameWatermark;
 
 
-
     private final InvoiceRepository repos;
     private final OrderRepository oRepos;
     private final ImageDataService imageService;
+    private final InvoiceUtil invoiceUtil;
 
 
-    public InvoiceService(InvoiceRepository repos, OrderRepository oRepos, ImageDataService imageService, ImageUtil imageUtil) {
+    public InvoiceService(InvoiceRepository repos, OrderRepository oRepos, ImageDataService imageService, InvoiceUtil invoiceUtil) {
         this.repos = repos;
         this.oRepos = oRepos;
         this.imageService = imageService;
-        this.imageUtil = imageUtil;
+        this.invoiceUtil = invoiceUtil;
     }
 
 
-          public Invoice generateInvoicePdf(Long orderId) {
+    public Invoice generateInvoicePdf(Long orderId) {
 
-    Order order = oRepos.findById(orderId).orElseThrow(() -> new ResourceNotFoundException
+        Order order = oRepos.findById(orderId).orElseThrow(() -> new ResourceNotFoundException
                 ("order not found"));
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             PdfWriter writer = new PdfWriter(outputStream);
@@ -254,22 +256,21 @@ public class InvoiceService {
             invoice.setCustomer(order.getCustomer());
             invoice.setCustomerCompany(order.getCustomer().getCompany());
             invoice.setOrderNumber(order.getId().intValue());
-            invoice.setInvoiceData(ImageUtil.compressImage(invoiceData));
-            repos.save(invoice);
+            invoice.setInvoiceData(InvoiceUtil.compressInvoice(invoiceData));
+            invoice = repos.save(invoice);
 
             return invoice;
 
-        }catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
-
-    public byte[] getInvoiceFromOrder(Long id){
+    public byte[] getInvoiceFromOrder(Long id) {
         Invoice invoice = repos.findByOrderNumber(id).orElseThrow(() -> new ResourceNotFoundException
                 ("order not found"));
-        return ImageUtil.decompressImage(invoice.getInvoiceData());
+        return InvoiceUtil.decompressInvoice(invoice.getInvoiceData());
     }
 
     public List<byte[]> getAllInvoices() {
@@ -277,7 +278,7 @@ public class InvoiceService {
         List<byte[]> invoicesData = new ArrayList<>();
 
         for (Invoice invoice : invoices) {
-            byte[] invoiceData = ImageUtil.decompressImage(invoice.getInvoiceData());
+            byte[] invoiceData = InvoiceUtil.decompressInvoice(invoice.getInvoiceData());
             invoicesData.add(invoiceData);
         }
         return invoicesData;
@@ -289,7 +290,7 @@ public class InvoiceService {
         List<byte[]> invoicesData = new ArrayList<>();
 
         for (Invoice invoice : invoices) {
-            byte[] invoiceData = ImageUtil.decompressImage(invoice.getInvoiceData());
+            byte[] invoiceData = InvoiceUtil.decompressInvoice(invoice.getInvoiceData());
             invoicesData.add(invoiceData);
         }
         return invoicesData;

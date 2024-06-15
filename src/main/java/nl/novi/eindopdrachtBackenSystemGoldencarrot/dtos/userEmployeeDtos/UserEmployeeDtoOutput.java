@@ -1,7 +1,5 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos;
 
-import jakarta.validation.constraints.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

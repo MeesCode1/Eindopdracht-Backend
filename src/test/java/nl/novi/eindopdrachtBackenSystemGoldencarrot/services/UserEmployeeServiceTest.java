@@ -1,7 +1,6 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.services;
 
 import jakarta.mail.MessagingException;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDtoOutput;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Role;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.UserEmployee;

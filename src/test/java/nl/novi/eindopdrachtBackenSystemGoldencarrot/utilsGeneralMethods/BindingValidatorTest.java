@@ -1,6 +1,5 @@
-package nl.novi.eindopdrachtBackenSystemGoldencarrot.GeneralMethodsComponent;
+package nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods;
 
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.BindingValidator;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -52,3 +51,4 @@ class BindingValidatorTest {
         assertEquals(null, result);
     }
 }
+

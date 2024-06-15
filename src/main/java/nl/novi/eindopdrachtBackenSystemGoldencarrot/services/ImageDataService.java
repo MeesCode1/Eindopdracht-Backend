@@ -25,7 +25,7 @@ public class ImageDataService {
 
         String newImageName = multipartFile.getOriginalFilename();
         Optional<ImageDataFile> existingDataFile = imageRepos.findByName(newImageName);
-        if(existingDataFile.isPresent()){
+        if (existingDataFile.isPresent()) {
             throw new IllegalArgumentException("afbeelding met deze naam bestaat al in database");
         }
         ImageDataFile imageData = new ImageDataFile();
@@ -39,11 +39,11 @@ public class ImageDataService {
     }
 
     @Transactional
-    public byte[] getImage(String name){
+    public byte[] getImage(String name) {
 
-     ImageDataFile imageData = imageRepos.findByName(name).orElseThrow(() ->
+        ImageDataFile imageData = imageRepos.findByName(name).orElseThrow(() ->
                 new ResourceNotFoundException("Image not found"));
 
-     return ImageUtil.decompressImage(imageData.getImageData());
+        return ImageUtil.decompressImage(imageData.getImageData());
     }
 }

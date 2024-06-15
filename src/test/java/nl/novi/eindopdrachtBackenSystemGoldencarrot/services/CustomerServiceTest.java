@@ -4,9 +4,11 @@ import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.customerDtos.CustomerDt
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundException;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Customer;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.CustomerRepository;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;

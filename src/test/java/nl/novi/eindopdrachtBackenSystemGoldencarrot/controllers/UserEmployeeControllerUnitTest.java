@@ -1,6 +1,5 @@
 package nl.novi.eindopdrachtBackenSystemGoldencarrot.controllers;
 
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDtoOutput;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.security.JwtService;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.UserEmployeeService;

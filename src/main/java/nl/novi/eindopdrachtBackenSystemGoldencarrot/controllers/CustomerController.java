@@ -3,9 +3,8 @@ package nl.novi.eindopdrachtBackenSystemGoldencarrot.controllers;
 import jakarta.validation.Valid;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.customerDtos.CustomerDto;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.customerDtos.CustomerDtoUpdate;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.BindingValidator;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.services.CustomerService;
-import org.springframework.beans.factory.annotation.Value;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.BindingValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -62,7 +61,7 @@ public class CustomerController {
             return new ResponseEntity<>(fieldErrors, HttpStatus.BAD_REQUEST);
         }
         CustomerDto updatedCustomerDto = service.updateCustomer(company, cdto);
-        return ResponseEntity.ok(cdto);
+        return ResponseEntity.ok(updatedCustomerDto);
     }
 
     @DeleteMapping("/{id}")

@@ -5,12 +5,11 @@ import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEm
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.dtos.userEmployeeDtos.UserEmployeeDtoUpdate;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.IllegalArgumentException;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundException;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Customer;
-import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.ModelMapperConfig;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Role;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.UserEmployee;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.RoleRepository;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.repositorys.UserEmployeeRepository;
+import nl.novi.eindopdrachtBackenSystemGoldencarrot.utilsGeneralMethods.ModelMapperConfig;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,11 +41,11 @@ public class UserEmployeeService {
                     "kies een andere gebruikersnaam");
         }
 
-            String checkCorrectUsername = udto.firstName + udto.lastName;
-            if (!udto.username.equals(checkCorrectUsername)){
-                throw new IllegalArgumentException("username requirement: username =" +
-                        "FirstnameLastname");
-            }
+        String checkCorrectUsername = udto.firstName + udto.lastName;
+        if (!udto.username.equals(checkCorrectUsername)) {
+            throw new IllegalArgumentException("username requirement: username =" +
+                    "FirstnameLastname");
+        }
 
         UserEmployee newUser = ModelMapperConfig.mappingToEntityUserEmployee(udto);
         newUser.setPassword(pwEncoder.encode(udto.password));
@@ -92,7 +91,7 @@ public class UserEmployeeService {
         if (udto.firstName != null || udto.lastName != null || udto.username != null) {
             String checkCorrectUsername = udto.firstName + udto.lastName;
 
-            if (udto.username == null || !udto.username.equals(checkCorrectUsername)){
+            if (udto.username == null || !udto.username.equals(checkCorrectUsername)) {
                 throw new IllegalArgumentException("username requirement: username =" +
                         "FirstnameLastname");
             }
