@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -151,21 +152,19 @@ class OrderIntegrationTest {
                         .content(requestJsonCustomer))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isCreated());
-//        this.mockMvc.perform(multipart("/image")
-//                        .file(imageMultipartFile))
-//                .andDo(MockMvcResultHandlers.print())
-//                .andExpect(status().isOk()); // Aannemende dat de status is OK voor upload
-//        // .andReturn();
-//        this.mockMvc.perform(multipart("/image")
-//                        .file(imageMultipartFile2))
-//                .andDo(MockMvcResultHandlers.print())
-//                .andExpect(status().isOk()); // Aannemende dat de status is OK voor upload
-//        //.andReturn();
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/orders")
                         .contentType(APPLICATION_JSON_UTF8)
                         .content(requestJson))
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.customerCompany").value("Maze"))
+                .andExpect(jsonPath("$.products[0].productName").value("Dorade side"))
+                .andExpect(jsonPath("$.products[0].quantity").value(3))
+                .andExpect(jsonPath("$.products[1].productName").value("Vine tomatoes"))
+                .andExpect(jsonPath("$.products[1].quantity").value(2))
+                .andExpect(jsonPath("$.products[2].productName").value("Basil"))
+                .andExpect(jsonPath("$.products[2].quantity").value(1));
     }
+
 }

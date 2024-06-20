@@ -12,6 +12,7 @@ import com.itextpdf.layout.border.Border;
 import com.itextpdf.layout.border.SolidBorder;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.property.TextAlignment;
+import jakarta.transaction.Transactional;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.exception.ResourceNotFoundException;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Invoice;
 import nl.novi.eindopdrachtBackenSystemGoldencarrot.models.Order;
@@ -61,7 +62,7 @@ public class InvoiceService {
         this.invoiceUtil = invoiceUtil;
     }
 
-
+    @Transactional
     public Invoice generateInvoicePdf(Long orderId) {
 
         Order order = oRepos.findById(orderId).orElseThrow(() -> new ResourceNotFoundException
@@ -266,13 +267,14 @@ public class InvoiceService {
         }
     }
 
-
+    @Transactional
     public byte[] getInvoiceFromOrder(Long id) {
         Invoice invoice = repos.findByOrderNumber(id).orElseThrow(() -> new ResourceNotFoundException
                 ("order not found"));
         return InvoiceUtil.decompressInvoice(invoice.getInvoiceData());
     }
 
+    @Transactional
     public List<byte[]> getAllInvoices() {
         Iterable<Invoice> invoices = repos.findAll();
         List<byte[]> invoicesData = new ArrayList<>();
@@ -284,6 +286,7 @@ public class InvoiceService {
         return invoicesData;
     }
 
+    @Transactional
     public List<byte[]> getInvoicesByCustomer(String customerCompany) {
         Iterable<Invoice> invoices = repos.findByCustomer_Company(customerCompany);
 

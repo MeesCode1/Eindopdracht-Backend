@@ -40,6 +40,19 @@ public class InvoiceController {
         return new ResponseEntity<>(invoicePdfBytes, headers, HttpStatus.OK);
     }
 
+    @GetMapping("/download/{orderID}")
+    public ResponseEntity<byte[]> downloadInvoice(@PathVariable Long orderID) {
+
+        byte[] invoicePdfBytes = service.getInvoiceFromOrder(orderID);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        String fileName = "invoice-" + orderID + ".pdf";
+        headers.setContentDispositionFormData("attachment", fileName);
+
+        return new ResponseEntity<>(invoicePdfBytes, headers, HttpStatus.OK);
+    }
+
     @GetMapping(produces = "application/zip")
     public ResponseEntity<byte[]> downloadInvoices() throws IOException {
 
