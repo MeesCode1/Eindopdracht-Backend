@@ -85,7 +85,7 @@ public class CustomerService {
 
         Customer updatedCustomer = repos.save(c);
 
-        return ModelMapperConfig.mappingToDtoCustomer(c);
+        return ModelMapperConfig.mappingToDtoCustomer(updatedCustomer);
     }
 
     public String deleteCustomer(Long id) {

@@ -26,8 +26,7 @@ public class UserEmployeeController {
     }
 
     @PostMapping()
-    public ResponseEntity<Object> createUserEmployee(@Valid
-                                                     @RequestBody UserEmployeeDto userdto,
+    public ResponseEntity<Object> createUserEmployee(@Valid @RequestBody UserEmployeeDto userdto,
                                                      BindingResult br) {
 
         String fieldErrors = BindingValidator.validateInput(br);
@@ -57,10 +56,14 @@ public class UserEmployeeController {
     }
 
     @PutMapping("/{employeeNumber}")
-    public ResponseEntity<UserEmployeeDtoOutput> updateUserEmployee(@PathVariable Long employeeNumber,
+    public ResponseEntity<Object> updateUserEmployee(@PathVariable Long employeeNumber,
                                                                     @Valid @RequestBody UserEmployeeDtoUpdate udto,
                                                                     BindingResult br) {
 
+        String fieldErrors = BindingValidator.validateInput(br);
+        if (fieldErrors != null) {
+            return new ResponseEntity<>(fieldErrors, HttpStatus.BAD_REQUEST);
+        }
         UserEmployeeDtoOutput updatedUdto = service.updateUserEmployee(employeeNumber, udto);
         return ResponseEntity.ok(updatedUdto);
     }

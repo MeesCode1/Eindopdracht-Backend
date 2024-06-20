@@ -55,91 +55,10 @@ class OrderServiceTest {
     @Test
     void shouldSaveAndReturnCorrectOrder() throws MessagingException {
 
-//        Customer c = new Customer();
-//        c.setCompany("Jamie's Deli");
-//        c.setFirstName("Jamie");
-//        c.setLastName("Oliver");
-//
-//        Product p = new Product();
-//        p.setName("Salmon side");
-//        p.setPriceInEur(32.14);
-//
-//        OrderItemLine oil = new OrderItemLine();
-//        oil.setProduct(p);
-//        oil.setQuantity(3);
-//        oil.setTotalPrice(96.42);
-//        List<OrderItemLine> oiLines = new ArrayList<>();
-//        oiLines.add(oil);
-//
-//        Order order = new Order();
-//        order.setId(1L);
-//        order.setCustomer(c);
-//        order.setProducts(oiLines);
-//
-//        List<OrderItemLineDto> oilDtos = new ArrayList<>();
-//        OrderItemLineDto oildto = new OrderItemLineDto();
-//        oilDtos.add(oildto);
-//
-//        OrderDto odto = new OrderDto();
-//        odto.setCustomerCompany("Jamie's Deli");
-//        odto.setProducts(oilDtos);
-//
-//
-//        Mockito.when(repos.save(any(Order.class))).thenReturn(order);
-//        Mockito.when(cRepos.findByCompany(anyString())).thenReturn(Optional.of(c));
-//        Mockito.when(ilService.createOrderItemLine(eq(null),
-//                any(OrderItemLineDto.class))).thenReturn(oil);
-//       doNothing().when(emailSender.sendEmail(any(),any(),any(EmailMessage.class)));
-//        OrderDto resultOdto;
-//        resultOdto = service.createOrder(odto);
-
-
-//        Customer c = new Customer();
-//        c.setCompany("Jamie's Deli");
-//        c.setFirstName("Jamie");
-//        c.setLastName("Oliver");
-//
-//        Product p = new Product();
-//        p.setName("Salmon side");
-//        p.setPriceInEur(32.14);
-//        OrderItemLine oil = new OrderItemLine();
-//        oil.setProduct(p);
-//        oil.setQuantity(3);
-//        oil.setTotalPrice(96.42);
-//        List<OrderItemLine> oiLines = new ArrayList<>();
-//        oiLines.add(oil);
-//
-//        List<OrderItemLineDto> oilDtos = new ArrayList<>();
-//        OrderItemLineDto oildto = new OrderItemLineDto();
-//        oilDtos.add(oildto);
-//
-//        OrderDto odto = new OrderDto();
-//        odto.setCustomerCompany("Jamie's Deli");
-//        odto.setProducts(oilDtos);
-//
-//        Mockito.when(cRepos.findByCompany(anyString())).thenReturn(Optional.of(c));
-//        Mockito.when(ilService.createOrderItemLine(eq(null),
-//                any(OrderItemLineDto.class))).thenReturn(oil);
-//        doNothing().when(emailSender).sendEmail
-//                (anyString(), anyString(),any());
-//
-//        OrderDto resultOdto = service.createOrder(odto);
-//
-//        assertEquals(c.getCompany(), resultOdto.customerCompany);
-//        assertEquals(c.getFirstName(), resultOdto.customerFirstName);
-//        assertEquals(c.getLastName(), resultOdto.customerLastName);
-//        assertEquals(oiLines.get(0).getProduct().getName(),
-//                resultOdto.getProducts().get(0).getProductName());
-//        assertEquals(oiLines.get(0).getQuantity(),
-//                resultOdto.getProducts().get(0).getQuantity());
-//        assertEquals(oiLines.get(0).getTotalPrice(),
-//                resultOdto.getProducts().get(0).getTotalPrice());
-//        assertNotNull(resultOdto.getOrderDate());
 
         OrderDto orderDto = new OrderDto();
         orderDto.setCustomerCompany("Test Company");
         List<OrderItemLineDto> products = new ArrayList<>();
-        // Voeg OrderItemLineDto's toe aan products lijst indien nodig
         orderDto.setProducts(products);
 
         Order order = new Order();
@@ -159,19 +78,16 @@ class OrderServiceTest {
 
         when(repos.save(any(Order.class))).thenReturn(order);
         when(cRepos.findByCompany("Test Company")).thenReturn(Optional.of(customer));
-//        when(ilService.createOrderItemLine(anyLong(), any(OrderItemLineDto.class))).thenReturn(orderItemLine);
-        //doNothing().when(emailSender).sendEmail(eq(mailUsername), eq(mailPassword), any(EmailMessage.class));
         doNothing().when(emailSender).sendEmail(any(), any(), any(EmailMessage.class));
         when(invoiceService.generateInvoicePdf(anyLong())).thenReturn(invoice);
 
-        // Act
+
         OrderDto result = service.createOrder(orderDto);
 
-        // Assert
+
         assertNotNull(result);
         assertEquals(1L, result.getId());
         verify(repos, times(3)).save(any(Order.class));
-        //verify(emailSender, times(1)).sendEmail(eq(mailUsername), eq(mailPassword), any(EmailMessage.class));
         verify(emailSender, times(1)).sendEmail(any(), any(), any(EmailMessage.class));
     }
 
